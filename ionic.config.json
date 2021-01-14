@@ -1,0 +1,7 @@
+{
+  "name": "SafebooruClient",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

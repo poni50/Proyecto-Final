@@ -1,5 +1,5 @@
 {
-  "name": "SafebooruClient",
+  "name": "UnsplashClient",
   "integrations": {
     "capacitor": {}
   },

@@ -1,6 +1,6 @@
 {
   "appId": "io.ionic.starter",
-  "appName": "SafebooruClient",
+  "appName": "UnsplashClient",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",

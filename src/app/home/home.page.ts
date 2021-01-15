@@ -8,8 +8,9 @@ declare var require: any;
   styleUrls: ["home.page.scss"],
 })
 export class HomePage implements OnInit {
-  postsList = [];
+  postsList:any =  [];
   isLoading = true;
+
 
   constructor(private http: HttpClient, private sanitizer: DomSanitizer) {}
 
@@ -18,14 +19,12 @@ export class HomePage implements OnInit {
   }
 
   async loadImgs() {
-    const response = await this.http.get("https://cors-anywhere.herokuapp.com/https://safebooru.org//index.php?page=dapi&s=post&q=index&rating=safe&pid=1",{ responseType: "text" }).toPromise();
+    const imgArray: any = await this.http.get("https://api.unsplash.com/photos/random?count=20&client_id=7leTnM2XWB-w59oqKpugx_DLVrRvT1p6wGe_uobx0zE").toPromise();
+    imgArray.forEach((e)=>{
+      this.postsList.push(e);
+    })
+   
     
-    const parse = new DOMParser();
-    const document = parse.parseFromString(response, "text/xml");
-    const result = document.getElementsByTagName("post");
-    for (let i = 0; i < result.length; i++) {
-      this.postsList.push(result[i].attributes[2].value);
-    }
     this.isLoading = false;
   }
 }

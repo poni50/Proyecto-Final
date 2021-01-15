@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
+import { DomSanitizer } from "@angular/platform-browser";
 declare var require: any;
 @Component({
   selector: "app-home",
@@ -10,34 +11,29 @@ export class HomePage implements OnInit {
   postsList = [];
   isLoading = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private sanitizer: DomSanitizer) {}
 
-  ngOnInit(): void {
-    
+  ngOnInit(): void {}
+
+  async loadImgs() {
     this.http
-      .get("https://testbooru.donmai.us/posts.json")
+      .get(
+        "https://cors-anywhere.herokuapp.com/https://safebooru.org//index.php?page=dapi&s=post&q=index&rating=safe",
+        { responseType: "text" }
+      )
       .toPromise()
       .then((data: any) => {
         console.log(data);
-        data.forEach((element) => {
-          this.postsList.push(element.large_file_url);
-        });
+        const parse = new DOMParser();
+        const document = parse.parseFromString(data, "text/xml");
+        const result = document.getElementsByTagName("post");
+        console.log(result);
+        for (let i = 0; i < result.length; i++) {
+          this.postsList.push(result[i].attributes[2].value);
+        }
+
         this.isLoading = false;
         console.log(this.postsList);
       });
-        
-    //this.getData();
-  }
-
-  async getData() {
-    const Danbooru = require("danbooru");
-    const booru = new Danbooru();
-
-    //const posts = await booru.posts({rating: 'safe', limit:5})
-    const post = booru.posts(2560676);
-    console.log(post);
-    const url = booru.url(post.file_url);
-    this.postsList.push(url);
-    console.log(url.href);
   }
 }

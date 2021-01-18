@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "proyectofinal-6a22c": {
+      "hosting": {
+        "app": [
+          "proyectofinal-6a22c"
+        ]
+      }
+    }
+  }
+}

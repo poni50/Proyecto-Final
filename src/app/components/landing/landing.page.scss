@@ -7,18 +7,28 @@ ion-content {
     position: absolute;
     height: 100vh;
   }
-  div {
+  .buttonContainer {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: flex-end;
+    align-items: center;
     margin-top: auto;
     position: absolute;
     bottom: 0;
-    width:100%;
-    margin-bottom: 30px;
+    width: 100%;
+    margin-bottom: 45px;
     ion-button {
-      width: 30%;
+      width: 35%;
     }
+  }
+  .spin {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  ion-spinner{
+    width: 64px;
+    height: 64px;
   }
 }

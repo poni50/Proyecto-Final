@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button (click)='dismiss()' fill='clear' slot='start' color="danger">Cancel</ion-button>
+    <ion-title class="ion-text-center">Login</ion-title>
+    <ion-button slot='end' fill='clear' (click)='login()' [disabled]="fg.invalid" color="success">Login</ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="fg">
+    <ion-item>
+      <ion-label position="floating">Email</ion-label>
+      <ion-input type="text" formControlName="email" autocomplete="off"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Password</ion-label>
+      <ion-input type="password" formControlName="password" autocomplete="off"></ion-input>
+    </ion-item>
+  </form>
+</ion-content>

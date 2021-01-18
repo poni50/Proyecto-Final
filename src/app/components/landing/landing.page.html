@@ -4,11 +4,15 @@
   </ion-toolbar>
 </ion-header>
 -->
-<ion-content fullscreen='true'>
-  <img [src]='imgL' alt="">
-  <div>
-    <ion-button >Login</ion-button>
-    <ion-button >Register</ion-button>
+<ion-content fullscreen="true">
+  <div class="spin" *ngIf="isLoading; else content">
+    <ion-spinner name="crescent"></ion-spinner>
   </div>
-  
+  <ng-template #content>
+    <img [src]="imgL" alt="" />
+    <div class="buttonContainer">
+      <ion-button (click)='login()'>Login</ion-button>
+      <ion-button (click)='register()'>Register</ion-button>
+    </div>
+  </ng-template>
 </ion-content>

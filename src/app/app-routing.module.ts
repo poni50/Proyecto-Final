@@ -19,7 +19,6 @@ const routes: Routes = [
     path: 'landing',
     loadChildren: () => import('./components/landing/landing.module').then( m => m.LandingPageModule)
   },
-
 ];
 
 @NgModule({

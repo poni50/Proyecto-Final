@@ -34,7 +34,7 @@ export class LoginPage implements OnInit {
     this.auth
       .login(this.fg.get("email").value, this.fg.get("password").value)
       .then(() => {
-        this.router.navigate(["/home"]);
+        this.router.navigate(["/tabs/home"]);
         this.dismiss();
       });
     //.catch(err => this.snackBar.open(err.message,'Dismiss',{duration: 3000}));

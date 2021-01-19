@@ -1,17 +1,24 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Pruebas
-    </ion-title>
-  </ion-toolbar>
+  <ion-item>
+    <ion-label>Search</ion-label>
+    <ion-input></ion-input>
+  </ion-item>
+    <ion-button fill='clear' (click)='logout()' color="danger">Login</ion-button>
+  
 </ion-header>
 
-<ion-content [fullscreen]="true">
-
+<ion-content>
+  
   <ion-grid>
     <ion-row>
-      <ion-col *ngFor="let post of postsList" size=4>
-        <ion-img [src]="post.urls.regular" style="width: 50%;"> </ion-img>
+      <ion-col *ngFor="let post of postsList" size=12>
+        <div class='imgs'>
+          <ion-img [src]="post.urls.regular" style="width: 100%;" (click)='openImageModal(post)'> </ion-img>
+          <ion-icon [name]='post.liked ? "heart" : "heart-outline"' (click)='likeImage(post.id)'></ion-icon>
+        </div>
+      </ion-col>
+      <ion-col size=12>
+        <ion-button fill='clear' expand="full" (click)='showMore()'>Show more</ion-button>   
       </ion-col>
     </ion-row>
   </ion-grid>

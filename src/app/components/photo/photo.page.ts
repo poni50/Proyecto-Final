@@ -22,8 +22,8 @@ export class PhotoPage implements OnInit {
   }
 
   liked(){
-    if(this.imageData.liked){
-    this.imageData.liked = !this.imageData.liked;
+    if(this.imageData.liked == true){
+    this.imageData.liked = false;
     }else{
       this.imageData = {...this.imageData, liked: true};
     }

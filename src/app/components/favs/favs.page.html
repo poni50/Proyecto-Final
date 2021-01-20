@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>favs</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <h2>Collections</h2>
+  <div style="height: 100px;">
+    
+  </div>
+  <h2>All-items</h2>
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor="let post of likedPhotos" size=12>
+        <div class='imgs'>
+          <ion-img [src]="post.urls.regular" style="width: 100%;" > </ion-img>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -16,6 +16,10 @@ const routes: Routes = [
       {
         path: 'search',
         loadChildren: () => import('../components/search/search.module').then(m => m.SearchPageModule)
+      },
+      {
+        path: 'favs',
+        loadChildren: () => import('../components/favs/favs.module').then( m => m.FavsPageModule)
       },/*
       {
         path: '',

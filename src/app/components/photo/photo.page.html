@@ -1,20 +1,36 @@
 <ion-content>
   <ion-card>
     <ion-item>
-      <ion-avatar><img [src]='imageData.user.profile_image.large' alt=""></ion-avatar>
+      <ion-avatar
+        ><img [src]="imageData.user.profile_image.large" alt=""
+      /></ion-avatar>
       <ion-card-header>
         <ion-card-title>{{imageData.user.name}}</ion-card-title>
-        <ion-card-subtitle>@{{imageData.user.instagram_username}}</ion-card-subtitle>
-      </ion-card-header>     
+        <ion-card-subtitle
+          >@{{imageData.user.instagram_username}}</ion-card-subtitle
+        >
+      </ion-card-header>
     </ion-item>
     <ion-card-content>
-     <img [src]='imageData.urls.full' alt="">
-     <div class="containerButtons">
-      <ion-button (click)='liked()' [fill]='imageData.liked ? "solid" : "clear"' [class]='imageData.liked ? "liked" : ""'>{{imageData.liked ? "Dislike" : "Like"}}</ion-button>
-      <ion-button fill='clear'>Share</ion-button>
-    <ion-button (click)='dismiss()' fill='clear' color='danger' >Close</ion-button>
-     </div>
+      <img [src]="imageData.urls.full" alt="" />
+      <div class="containerButtons">
+        <ion-button
+          (click)="liked()"
+          [fill]='imageData.liked ? "solid" : "clear"'
+          [class]='imageData.liked ? "liked" : ""'
+          >{{imageData.liked ? "Dislike" : "Like"}}</ion-button
+        >
+        <ion-button fill="clear">Share</ion-button>
+        <ion-button (click)="dismiss()" fill="clear" color="danger"
+          >Close</ion-button
+        >
+      </div>
+      <div *ngIf='imageData.liked'>
+        <ion-item>
+          <ion-label>Collection</ion-label>
+          <ion-input></ion-input>
+        </ion-item>
+      </div>
     </ion-card-content>
-   
   </ion-card>
 </ion-content>

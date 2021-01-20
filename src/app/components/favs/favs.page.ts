@@ -15,7 +15,7 @@ export class FavsPage implements OnInit {
   constructor(private photoService: PhotosService, private modalController: ModalController) { }
 
   ngOnInit() {
-    this.photoService.observableLikePhotos$.subscribe(data => this.likedPhotos = data);
+    //this.photoService.observableLikePhotos$.subscribe(data => this.likedPhotos = data);
   }
 
   async openImageModal(image: any) {

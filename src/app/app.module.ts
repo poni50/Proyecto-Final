@@ -14,6 +14,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 
 import { environment } from "src/environments/environment";
 import { IonicStorageModule } from "@ionic/storage";
+import { CommonModule } from "@angular/common";
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,7 +26,8 @@ import { IonicStorageModule } from "@ionic/storage";
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
+    CommonModule
   ],
   providers: [
     StatusBar,

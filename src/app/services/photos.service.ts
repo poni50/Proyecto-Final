@@ -76,6 +76,12 @@ export class PhotosService {
     return arr;
   }
 
+  onModalDislike(image: any, arr: any[]){
+    if(!image.liked){         
+      this.observableLikePhotos$.next(this.removePhoto(image, arr));
+    }
+  }
+
   addPhoto(image: any, arr: any[]) {
     if (arr.findIndex((e) => e.id == image.id) < 0) {
       arr = [...arr, image];

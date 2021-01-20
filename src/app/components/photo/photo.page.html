@@ -12,7 +12,8 @@
       </ion-card-header>
     </ion-item>
     <ion-card-content>
-      <img [src]="imageData.urls.full" alt="" />
+      <img [src]="imageData.urls.full" alt="" (load)='isLoadingImg = false' [hidden]='isLoadingImg' />
+      <ion-spinner *ngIf='isLoadingImg'></ion-spinner>
       <div class="containerButtons">
         <ion-button
           (click)="liked()"

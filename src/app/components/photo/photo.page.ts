@@ -8,6 +8,8 @@ import { NavParams, ModalController } from "@ionic/angular";
 })
 export class PhotoPage implements OnInit {
   imageData: any;
+  isLoadingImg: boolean = true;
+
   constructor(
     private navParams: NavParams,
     private modalController: ModalController
@@ -19,6 +21,10 @@ export class PhotoPage implements OnInit {
 
   dismiss() {
     this.modalController.dismiss(this.imageData);
+  }
+
+  finishLoading(){
+    this.isLoadingImg = !this.isLoadingImg;
   }
 
   liked() {

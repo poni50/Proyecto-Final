@@ -9,7 +9,7 @@
       <ion-col *ngFor="let post of postsList" size=12>
         <div class='imgs'>
           <ion-img [src]="post.urls.regular" style="width: 100%;" (click)='openImageModal(post)'> </ion-img>
-          <ion-icon [name]='post.liked ? "heart" : "heart-outline"' (click)='likeImage(post.id)'></ion-icon>
+          <ion-icon [name]='post.liked ? "heart" : "heart-outline"' (click)='likeImage(post)'></ion-icon>
         </div>
       </ion-col>
       <ion-col size=12>

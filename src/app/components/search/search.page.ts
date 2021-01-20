@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { PhotoPage } from '../photo/photo.page';
+import { Storage } from "@ionic/storage";
 
 @Component({
   selector: 'app-search',
@@ -7,9 +10,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SearchPage implements OnInit {
 
-  constructor() { }
+  filteredPhotos: any[];
+  likedPhotos: any[];
+  
+  constructor(private modalController: ModalController, private storage: Storage ) { }
 
   ngOnInit() {
+    //this.storage.get('likedPhotos').then(data => data ? this.likedPhotos = data : this.likedPhotos = []).catch(err => this.likedPhotos = []);
   }
+
+  
+
+
 
 }

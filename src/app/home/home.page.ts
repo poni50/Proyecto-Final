@@ -1,3 +1,4 @@
+import { PhotosService } from './../services/photos.service';
 import { PhotoPage } from "./../components/photo/photo.page";
 import { ModalController } from "@ionic/angular";
 import { Router } from "@angular/router";
@@ -16,45 +17,33 @@ export class HomePage implements OnInit {
   isLoading = true;
   pageNumber: number = 1;
   likedPhotos: any[];
+  
 
   constructor(
     private http: HttpClient,
     private auth: AuthService,
     private router: Router,
     private modalController: ModalController,
-    private storage: Storage
+    private storage: Storage,
+    private photoService: PhotosService
   ) {}
 
   ngOnInit(): void {
     this.loadImgs();
-    this.storage.get('likedPhotos').then(data => data ? this.likedPhotos = data : this.likedPhotos = []).catch(err => this.likedPhotos = []);
+    this.photoService.observableLikePhotos$.subscribe(e => this.likedPhotos = e);
+    //this.storage.get('likedPhotos').then(data => data ? this.likedPhotos = data : this.likedPhotos = []).catch(err => this.likedPhotos = []);
   }
 
   async loadImgs() {
-    const imgArray: any = await this.http
-      .get(
-        "https://api.unsplash.com/photos/?client_id=7leTnM2XWB-w59oqKpugx_DLVrRvT1p6wGe_uobx0zE"
-      )
-      .toPromise();
-    imgArray.forEach((e) => {
-      this.postsList.push(e);
-    });
-    
-    this.postsList = this.checkLikes(this.postsList);
+   this.postsList = await this.photoService.getPhotos("https://api.unsplash.com/photos/?client_id=7leTnM2XWB-w59oqKpugx_DLVrRvT1p6wGe_uobx0zE"); 
     this.isLoading = false;
   }
 
   async showMore() {
     this.pageNumber++;
-    let imgArray: any = await this.http
-      .get(
-        `https://api.unsplash.com/photos/?page=${this.pageNumber}&client_id=7leTnM2XWB-w59oqKpugx_DLVrRvT1p6wGe_uobx0zE`
-      )
-      .toPromise();
-    
-    imgArray = this.checkLikes(imgArray);
+    let imgArray: any = await this.photoService.getPhotos(`https://api.unsplash.com/photos/?page=${this.pageNumber}&client_id=7leTnM2XWB-w59oqKpugx_DLVrRvT1p6wGe_uobx0zE`);    
     imgArray.forEach((e) => {
-      this.postsList = this.addPhoto(e, this.postsList);
+      this.postsList = this.photoService.addPhoto(e, this.postsList);
     });
   }
 
@@ -63,24 +52,11 @@ export class HomePage implements OnInit {
     this.router.navigate(["/landing"]);
   }
 
-  likeImage(id: string) {
-    this.postsList = this.postsList.map((e) => {
-      if (e.id == id) {
-        if (e.liked == true) {
-          e.liked = false;
-        } else {
-          e = { ...e, liked: true };
-        }
-
-        this.likedPhotos = e.liked ? this.addPhoto(e, this.likedPhotos) : this.removePhoto(e, this.likedPhotos);
-      }
-      return e;
-    });
-    console.log("LIKED IMAGES", this.likedPhotos);
-    this.storage.set('likedPhotos', this.likedPhotos);
+  likeImage(image: any) {
+    this.postsList = this.photoService.likeImage(image, this.postsList);
   }
 
-  checkLikes(arr: any[]){
+  /*checkLikes(arr: any[]){
     return arr.map(post => {
       if (this.likedPhotos.findIndex(like => like.id == post.id) >= 0){
         post = {...post, liked: true}
@@ -88,9 +64,9 @@ export class HomePage implements OnInit {
 
       return post;
     })
-  }
+  }*/
 
-  addPhoto(image: any, arr: any[]) {
+  /*addPhoto(image: any, arr: any[]) {
     if (arr.findIndex((e) => e.id == image.id) < 0) {
       arr = [...arr, image];
     }
@@ -99,7 +75,7 @@ export class HomePage implements OnInit {
 
   removePhoto(image: any, arr: any[]){
     return arr.filter( e => e.id != image.id);
-  }
+  }*/
 
   async openImageModal(image: any) {
     const modal = await this.modalController.create({
@@ -107,14 +83,7 @@ export class HomePage implements OnInit {
       componentProps: { imageData: image },
     });
     modal.onDidDismiss().then((data: any) => {
-      this.postsList = this.postsList.map((e) => {
-        if (e.id == data.data.id) {
-          e = data.data;
-          this.likedPhotos = e.liked ? this.addPhoto(e, this.likedPhotos) : this.removePhoto(e, this.likedPhotos);
-        }
-        return e;
-      });
-      this.storage.set('likedPhotos', this.likedPhotos);
+      this.postsList = this.photoService.onModalDismiss(data.data, this.postsList);
     });
 
     return await modal.present();

@@ -5,5 +5,18 @@
 </ion-header>
 
 <ion-content>
-<input type='input' /> 
+  <!--<ion-item>
+    <ion-label>Search</ion-label>
+    <ion-input type='input'></ion-input> 
+  </ion-item>
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor="let post of postsList" size=12>
+        <div class='imgs'>
+          <ion-img [src]="post.urls.regular" style="width: 100%;" (click)='openImageModal(post)'> </ion-img>
+          <ion-icon [name]='post.liked ? "heart" : "heart-outline"' (click)='likeImage(post.id)'></ion-icon>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>-->
 </ion-content>

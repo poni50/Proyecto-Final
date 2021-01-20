@@ -28,6 +28,7 @@ export class HomePage implements OnInit {
     this.photoService.observableLikePhotos$.subscribe(
       (e) => (this.likedPhotos = e)
     );
+    this.router.events.subscribe( () => this.photoService.checkLikes(this.postsList));
   }
 
   async loadImgs() {

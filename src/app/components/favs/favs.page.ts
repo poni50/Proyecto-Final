@@ -24,9 +24,7 @@ export class FavsPage implements OnInit {
       componentProps: { imageData: image },
     });
     modal.onDidDismiss().then((data: any) => {
-        if(!data.data.liked){         
-          this.photoService.observableLikePhotos$.next(this.photoService.removePhoto(data.data, this.likedPhotos));
-        }
+        this.photoService.onModalDislike(data.data);
     });
 
     return await modal.present();

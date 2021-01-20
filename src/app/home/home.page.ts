@@ -24,24 +24,20 @@ export class HomePage implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadUser();
+    this.loadData();
     this.photoService.observableUserInfo$.subscribe(
       (e) => (this.likedPhotos = e.likedPhotos)
     );
     this.router.events.subscribe( () => this.photoService.checkLikes(this.postsList));
   }
 
-  async loadUser(){
+  async loadData(){
     const user = await this.auth.getUserInfo().toPromise();
     this.photoService.isLoading = this.photoService.loadImages(user.uid);
     this.postsList = await this.photoService.getPhotos(
       "https://api.unsplash.com/photos/?client_id=7leTnM2XWB-w59oqKpugx_DLVrRvT1p6wGe_uobx0zE"
     );
     this.isLoading = false;
-  }
-
-  async loadImgs() {
-    
   }
 
   async showMore() {

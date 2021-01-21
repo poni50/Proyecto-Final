@@ -76,10 +76,11 @@ export class PhotosService {
     return arr;
   }
 
-  onModalDislike(image: any, arr: any[]){
+  onModalDislike(image: any){
     if(!image.liked){         
-      this.observableLikePhotos$.next(this.removePhoto(image, arr));
+      this.observableLikePhotos$.next(this.removePhoto(image, this.likedPhotos));
     }
+    this.storage.set("likedPhotos", this.likedPhotos);
   }
 
   addPhoto(image: any, arr: any[]) {

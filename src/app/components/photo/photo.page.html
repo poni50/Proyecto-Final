@@ -15,22 +15,26 @@
       <img [src]="imageData.urls.full" alt="" (load)='isLoadingImg = false' [hidden]='isLoadingImg' />
       <ion-spinner *ngIf='isLoadingImg'></ion-spinner>
       <div class="containerButtons">
-        <ion-button
-          (click)="liked()"
-          [fill]='imageData.liked ? "solid" : "clear"'
-          [class]='imageData.liked ? "liked" : ""'
-          >{{imageData.liked ? "Dislike" : "Like"}}</ion-button
-        >
-        <ion-button fill="clear">Share</ion-button>
-        <ion-button (click)="dismiss()" fill="clear" color="danger"
-          >Close</ion-button
-        >
+        <ion-button (click)="liked()" fill="clear">
+          <ion-icon [name]='imageData.liked ? "heart-dislike" : "heart-outline"'></ion-icon>
+        </ion-button>
+        <ion-button fill="clear">
+          <ion-icon name="share-social"></ion-icon>
+        </ion-button>
+        <ion-button (click)="dismiss()" fill="clear" color="danger">
+          <ion-icon name="close"></ion-icon>
+        </ion-button>
       </div>
       <div *ngIf='imageData.liked'>
-        <ion-item>
-          <ion-label>Collection</ion-label>
-          <ion-input></ion-input>
+        <ion-item *ngIf="collections.length > 0; else mensajeError">
+          <ion-label position="floating">Add to collection</ion-label>
+          <ion-select>
+            <ion-select-option *ngFor="let collection of collections" value="collection.name">{{collection.name}}</ion-select-option>
+          </ion-select>
         </ion-item>
+        <ng-template #mensajeError>
+          <ion-label>You don't have any collections yet</ion-label>
+        </ng-template>
       </div>
     </ion-card-content>
   </ion-card>

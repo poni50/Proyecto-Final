@@ -15,6 +15,7 @@ export class HomePage implements OnInit {
   isLoading = true;
   pageNumber: number = 1;
   likedPhotos: any[];
+  collections: any[];
 
   constructor(
     private auth: AuthService,
@@ -26,8 +27,10 @@ export class HomePage implements OnInit {
   ngOnInit(): void {
     this.loadData();
     this.photoService.observableUserInfo$.subscribe(
-      (e) => (this.likedPhotos = e.likedPhotos)
-    );
+      e => {
+        this.likedPhotos = e.likedPhotos;
+        this.collections = e.collections;
+    });
     this.router.events.subscribe( () => this.photoService.checkLikes(this.postsList));
   }
 
@@ -62,7 +65,7 @@ export class HomePage implements OnInit {
   async openImageModal(image: any) {
     const modal = await this.modalController.create({
       component: PhotoPage,
-      componentProps: { imageData: image },
+      componentProps: { imageData: image, collections: this.collections },
     });
     modal.onDidDismiss().then((data: any) => {
       this.postsList = this.photoService.onModalDismiss(

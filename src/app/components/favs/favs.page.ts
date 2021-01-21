@@ -60,13 +60,16 @@ export class FavsPage implements OnInit {
           text: 'Cancel',
           role: 'cancel',
           cssClass: 'secondary',
-          handler: () => {
+          handler: () => {            
             console.log('Confirm Cancel');
           }
         }, {
           text: 'Ok',
-          handler: () => {
-            console.log('Confirm Ok');
+          handler: (data) => {
+            const createColl = this.photoService.createCollection(data.nameCollection);            
+            if(!createColl){
+              console.log('No lo ha creado');            
+            }
           }
         }
       ]

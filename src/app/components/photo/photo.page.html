@@ -28,8 +28,8 @@
       <div *ngIf='imageData.liked'>
         <ion-item *ngIf="collections.length > 0; else mensajeError">
           <ion-label position="floating">Add to collection</ion-label>
-          <ion-select>
-            <ion-select-option *ngFor="let collection of collections" value="collection.name">{{collection.name}}</ion-select-option>
+          <ion-select #collectionName (ionChange)='addPhotoToCollection(collectionName)'>
+            <ion-select-option  *ngFor="let collection of collections" value={{collection.name}}>{{collection.name}}</ion-select-option>
           </ion-select>
         </ion-item>
         <ng-template #mensajeError>

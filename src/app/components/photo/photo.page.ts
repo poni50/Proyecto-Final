@@ -36,4 +36,7 @@ export class PhotoPage implements OnInit {
       this.imageData = { ...this.imageData, liked: true };
     }
   }
+  addPhotoToCollection(collectionName){
+    this.imageData = {...this.imageData, collection: collectionName.value};  
+  }
 }

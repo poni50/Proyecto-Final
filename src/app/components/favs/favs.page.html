@@ -3,7 +3,7 @@
   <h2>Collections</h2>
   <div style="height: 100px;" class='container'>
     <div class="collectionsContainer" *ngFor="let collection of collections">
-      <img *ngIf="collection.photos; else placeholderImg" [src]="collection.photos[0].urls.thumb" style="width: 80px; height: 80px;"/>
+      <img *ngIf="collection.photos[0]; else placeholderImg" [src]="collection.photos[0].urls.thumb" style="width: 80px; height: 80px;"/>
       <ng-template #placeholderImg>
         <ion-icon name="folder" style="font-size: 80px; padding: 0px;"></ion-icon>
       </ng-template>

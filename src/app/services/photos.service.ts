@@ -19,7 +19,6 @@ interface UserInfo{
 })
 
 export class PhotosService {
-  // likedPhotos: any[] = [];
   isLoading: any;
   private uid: string;
   userInfo: UserInfo;
@@ -31,7 +30,10 @@ export class PhotosService {
     this.uid = userId;
     const data = await this.storage.get(userId);
     this.observableUserInfo$.next(data ? data : { likedPhotos: [], collections: [] });
-    this.observableUserInfo$.subscribe((e) => (this.userInfo = e));
+    this.observableUserInfo$.subscribe((e) => {
+      this.userInfo = e;
+      this.storage.set(this.uid, this.userInfo);
+    });
   }
 
   async getPhotos(url) {
@@ -65,7 +67,6 @@ export class PhotosService {
       }
       return e;
     });
-    this.storage.set(this.uid, this.userInfo);
     return arr;
   }
 
@@ -79,7 +80,6 @@ export class PhotosService {
       }
       return e;
     });
-    this.storage.set(this.uid, this.userInfo);
     return arr;
   }
 
@@ -87,7 +87,6 @@ export class PhotosService {
     if(!image.liked){   
       this.userInfo.likedPhotos = this.removePhoto(image, this.userInfo.likedPhotos); 
       this.observableUserInfo$.next(this.userInfo);
-      this.storage.set(this.uid, this.userInfo);
     }
   }
 

@@ -9,12 +9,14 @@ import { NavParams, ModalController } from "@ionic/angular";
 export class PhotoPage implements OnInit {
   imageData: any;
   isLoadingImg: boolean = true;
+  collections: any[];
 
   constructor(
     private navParams: NavParams,
     private modalController: ModalController
   ) {
     this.imageData = this.navParams.get("imageData");
+    this.collections = this.navParams.get("collections");
   }
 
   ngOnInit() {}

@@ -3,23 +3,37 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Storage } from "@ionic/storage";
 
+
+interface PhotoCollection{
+  name: string,
+  photos: any[]
+}
+
+interface UserInfo{
+  likedPhotos?: any[],
+  collections?: PhotoCollection[]
+}
+
 @Injectable({
   providedIn: "root",
 })
+
 export class PhotosService {
-  likedPhotos: any[] = [];
-  observableLikePhotos$ = new BehaviorSubject<any[]>([]);
   isLoading: any;
+  private uid: string;
+  userInfo: UserInfo;
+  observableUserInfo$ = new BehaviorSubject<UserInfo>({});
 
-  constructor(private http: HttpClient, private storage: Storage) {
-    //this.loadImages();
-    this.isLoading =  this.loadImages();
-  }
+  constructor(private http: HttpClient, private storage: Storage) { }
 
-  private async loadImages() {
-    const data = await this.storage.get("likedPhotos");
-    data ? this.observableLikePhotos$.next(data) : null;
-    this.observableLikePhotos$.subscribe((e) => (this.likedPhotos = e));
+  async loadImages(userId: string) {
+    this.uid = userId;
+    const data = await this.storage.get(userId);
+    this.observableUserInfo$.next(data ? data : { likedPhotos: [], collections: [] });
+    this.observableUserInfo$.subscribe((e) => {
+      this.userInfo = e;
+      this.storage.set(this.uid, this.userInfo);
+    });
   }
 
   async getPhotos(url) {
@@ -32,7 +46,7 @@ export class PhotosService {
   async checkLikes(arr: any[]) {
     await this.isLoading;
     return arr.map((post) => {
-      if (this.likedPhotos.findIndex((like) => like.id == post.id) >= 0) {
+      if (this.userInfo.likedPhotos.findIndex((like) => like.id == post.id) >= 0) {
         post = { ...post, liked: true };
       }
 
@@ -48,15 +62,11 @@ export class PhotosService {
         } else {
           e = { ...e, liked: true };
         }
-        this.observableLikePhotos$.next(
-          e.liked
-            ? this.addPhoto(e, this.likedPhotos)
-            : this.removePhoto(e, this.likedPhotos)
-        );
+        this.userInfo.likedPhotos = e.liked ? this.addPhoto(e, this.userInfo.likedPhotos) : this.removePhoto(e, this.userInfo.likedPhotos);
+        this.observableUserInfo$.next(this.userInfo);
       }
       return e;
     });
-    this.storage.set("likedPhotos", this.likedPhotos);
     return arr;
   }
 
@@ -64,23 +74,20 @@ export class PhotosService {
     arr = arr.map((e) => {
       if (e.id == image.id) {
         e = image;
-        this.observableLikePhotos$.next(
-          e.liked
-            ? this.addPhoto(e, this.likedPhotos)
-            : this.removePhoto(e, this.likedPhotos)
-        );
+
+        this.userInfo.likedPhotos = e.liked ? this.addPhoto(e, this.userInfo.likedPhotos) : this.removePhoto(e, this.userInfo.likedPhotos);
+        this.observableUserInfo$.next(this.userInfo);
       }
       return e;
     });
-    this.storage.set("likedPhotos", this.likedPhotos);
     return arr;
   }
 
   onModalDislike(image: any){
-    if(!image.liked){         
-      this.observableLikePhotos$.next(this.removePhoto(image, this.likedPhotos));
+    if(!image.liked){   
+      this.userInfo.likedPhotos = this.removePhoto(image, this.userInfo.likedPhotos); 
+      this.observableUserInfo$.next(this.userInfo);
     }
-    this.storage.set("likedPhotos", this.likedPhotos);
   }
 
   addPhoto(image: any, arr: any[]) {

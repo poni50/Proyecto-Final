@@ -1,14 +1,21 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>favs</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
+
   <h2>Collections</h2>
-  <div style="height: 100px;">
-    
+  <div style="height: 100px;" class='container'>
+    <div class="collectionsContainer" *ngFor="let collection of collections">
+      <img *ngIf="collection.photos; else placeholderImg" [src]="collection.photos[0].urls.thumb" style="width: 80px; height: 80px;"/>
+      <ng-template #placeholderImg>
+        <ion-icon name="folder" style="font-size: 80px; padding: 0px;"></ion-icon>
+      </ng-template>
+      <p style="margin: 5px;">{{collection.name}}</p>
+    </div>
+
+    <div class="collectionsContainer" (click)='createCollectionAlert()'>
+      <ion-icon name="add" style="font-size: 80px; padding: 0px;"></ion-icon>
+      <p style="margin: 5px;">Add new</p>
+    </div>
   </div>
+  
   <h2>All-items</h2>
   <ion-grid>
     <ion-row>
@@ -19,4 +26,5 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+  
 </ion-content>

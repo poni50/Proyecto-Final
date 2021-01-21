@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { first } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,10 @@ export class AuthService {
   
   register(email: string, password: string): Promise<any> {
     return this.auth.createUserWithEmailAndPassword(email, password);
+  }
+
+  getUserInfo(){
+    return this.auth.authState.pipe(first());
 
   }
 }

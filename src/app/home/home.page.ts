@@ -15,6 +15,7 @@ export class HomePage implements OnInit {
   isLoading = true;
   pageNumber: number = 1;
   likedPhotos: any[];
+  collections: any[];
 
   constructor(
     private auth: AuthService,
@@ -24,13 +25,18 @@ export class HomePage implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadImgs();
-    this.photoService.observableLikePhotos$.subscribe(
-      (e) => (this.likedPhotos = e)
-    );
+    this.loadData();
+    this.photoService.observableUserInfo$.subscribe(
+      e => {
+        this.likedPhotos = e.likedPhotos;
+        this.collections = e.collections;
+    });
+    this.router.events.subscribe( () => this.photoService.checkLikes(this.postsList));
   }
 
-  async loadImgs() {
+  async loadData(){
+    const user = await this.auth.getUserInfo().toPromise();
+    this.photoService.isLoading = this.photoService.loadImages(user.uid);
     this.postsList = await this.photoService.getPhotos(
       "https://api.unsplash.com/photos/?client_id=7leTnM2XWB-w59oqKpugx_DLVrRvT1p6wGe_uobx0zE"
     );
@@ -59,7 +65,7 @@ export class HomePage implements OnInit {
   async openImageModal(image: any) {
     const modal = await this.modalController.create({
       component: PhotoPage,
-      componentProps: { imageData: image },
+      componentProps: { imageData: image, collections: this.collections },
     });
     modal.onDidDismiss().then((data: any) => {
       this.postsList = this.photoService.onModalDismiss(

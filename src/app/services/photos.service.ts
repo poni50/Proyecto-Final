@@ -59,6 +59,13 @@ export class PhotosService {
     return imgArray;
   }
 
+  async searchPhotos(url) {
+    let searchArray: any = await this.http.get(url).toPromise();
+    searchArray = [...searchArray.results];
+    searchArray = this.checkLikes(searchArray);
+    return searchArray;
+  }
+
   async checkLikes(arr: any[]) {
     await this.isLoading;
     return arr.map((post) => {
@@ -67,7 +74,6 @@ export class PhotosService {
         console.log(photoData);
         post = photoData;
       }
-
       return post;
     });
   }

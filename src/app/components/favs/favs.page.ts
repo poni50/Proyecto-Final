@@ -4,6 +4,7 @@ import { PhotosService } from './../../services/photos.service';
 import { Component, OnInit } from '@angular/core';
 import { PhotoPage } from '../photo/photo.page';
 import { AlertController } from '@ionic/angular';
+import { CollectionPage } from './collection/collection.page';
 
 @Component({
   selector: 'app-favs',
@@ -39,6 +40,18 @@ export class FavsPage implements OnInit {
     });
     modal.onDidDismiss().then((data: any) => {
         this.photoService.onModalDislike(data.data);
+    });
+
+    return await modal.present();
+  }
+
+  async openCollectionModal(collection: any){
+    const modal = await this.modalController.create({
+      component: CollectionPage,
+      componentProps: {collections: this.collections},
+    });
+    modal.onDidDismiss().then((data: any) => {
+        //this.photoService.onModalDislike(data.data);
     });
 
     return await modal.present();

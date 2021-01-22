@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>collection</ion-title>
+    <ion-button (click)="dismiss()" fill="clear" color="danger">
+      <ion-icon name="close"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor="let post of collections" size=12>
+        <div class='imgs' >          
+          <ion-img [src]="post.urls.regular" [style]="'width: 100%;height:'+post.height" ></ion-img>         
+        </div>               
+      </ion-col>    
+      <!--<ion-spinner *ngIf="isLoading"></ion-spinner>   -->
+      <ion-col size=12>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

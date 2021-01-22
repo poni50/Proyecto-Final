@@ -37,6 +37,7 @@ export class PhotosService {
   }
 
   addToCollection() {
+    console.log(this.userInfo.likedPhotos);
     this.userInfo.collections.forEach((collection) => {
       this.userInfo.likedPhotos.forEach((photo) =>
         photo.collection == collection.name
@@ -44,6 +45,8 @@ export class PhotosService {
           : null
       );
     });
+    
+    
   }
 
   async getPhotos(url) {

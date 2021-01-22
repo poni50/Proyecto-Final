@@ -16,6 +16,7 @@ export class HomePage implements OnInit {
   pageNumber: number = 1;
   likedPhotos: any[];
   collections: any[];
+  isLoadingImg: boolean = true;
 
   constructor(
     private auth: AuthService,
@@ -32,6 +33,9 @@ export class HomePage implements OnInit {
         this.collections = e.collections;
     });
     this.router.events.subscribe( () => this.photoService.checkLikes(this.postsList));
+  }
+  finishLoading(){
+    this.isLoadingImg = !this.isLoadingImg;
   }
 
   async loadData(){

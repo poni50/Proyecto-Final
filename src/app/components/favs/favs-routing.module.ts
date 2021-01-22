@@ -7,7 +7,11 @@ const routes: Routes = [
   {
     path: '',
     component: FavsPage
+  },  {
+    path: 'collection',
+    loadChildren: () => import('./collection/collection.module').then( m => m.CollectionPageModule)
   }
+
 ];
 
 @NgModule({

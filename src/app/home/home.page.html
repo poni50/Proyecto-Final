@@ -7,15 +7,16 @@
   <ion-grid>
     <ion-row>
       <ion-col *ngFor="let post of postsList" size=12>
-        <div class='imgs'>
-          <ion-img [src]="post.urls.regular" style="width: 100%;" (click)='openImageModal(post)'> </ion-img>
-          <ion-icon [name]='post.liked ? "heart" : "heart-outline"' (click)='likeImage(post)'></ion-icon>
-        </div>
-      </ion-col>
+        <div class='imgs' >          
+          <ion-img [src]="post.urls.regular" [style]="'width: 100%;height:'+post.height" (click)='openImageModal(post)'></ion-img>
+          <ion-icon [name]='post.liked ? "heart" : "heart-outline"' (click)='likeImage(post)' *ngIf='!isLoading'></ion-icon>
+        </div>               
+      </ion-col>    
+      <ion-spinner *ngIf="isLoading"></ion-spinner>   
       <ion-col size=12>
-        <ion-button fill='clear' expand="full" (click)='showMore()'>Show more</ion-button>   
+        <ion-button fill='clear' expand="full" (click)='showMore()' *ngIf='!isLoading'>Show more</ion-button>   
       </ion-col>
     </ion-row>
   </ion-grid>
-  <ion-spinner *ngIf="isLoading"></ion-spinner>
+  
 </ion-content>

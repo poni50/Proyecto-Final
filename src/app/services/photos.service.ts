@@ -62,10 +62,10 @@ export class PhotosService {
   async checkLikes(arr: any[]) {
     await this.isLoading;
     return arr.map((post) => {
-      if (
-        this.userInfo.likedPhotos.findIndex((like) => like.id == post.id) >= 0
-      ) {
-        post = { ...post, liked: true };
+      const photoData = this.userInfo.likedPhotos.find((like) => like.id == post.id);
+      if (photoData) {
+        console.log(photoData);
+        post = photoData;
       }
 
       return post;
@@ -98,10 +98,21 @@ export class PhotosService {
     return arr;
   }
 
+  onCollectionDismiss(image: any, colName: string) {
+    this.userInfo.likedPhotos.forEach((e) => {
+      if (e.id == image.id) {
+        e = image;
+        this.updateLikes(e);
+      }
+      return e;
+    });
+    return this.userInfo.collections.find((e) => e.name == colName).photos;
+  }
+
   updateLikes(image: any){
     this.userInfo.likedPhotos = image.liked ? this.addPhoto(image, this.userInfo.likedPhotos): this.removePhoto(image, this.userInfo.likedPhotos);
     this.addToCollection();
-    this.observableUserInfo$.next(this.userInfo);
+    this.observableUserInfo$.next(this.userInfo);   
   }
 
   deleteCollection(name: string){

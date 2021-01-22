@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, ModalController, NavParams } from '@ionic/angular';
 import { PhotosService } from 'src/app/services/photos.service';
+import { PhotoPage } from '../../photo/photo.page';
 
 @Component({
   selector: 'app-collection',
@@ -49,6 +50,18 @@ export class CollectionPage implements OnInit {
   
       await alert.present();
     }
-    
-  
+
+    async openImageModal(image: any) {
+      const modal = await this.modalController.create({
+        component: PhotoPage,
+        componentProps: { imageData: image, collections: this.collection },
+      });
+      modal.onDidDismiss().then((data: any) => {               
+        this.collection.photos = this.photoService.onCollectionDismiss(
+          data.data,
+          this.collection.name,
+        );   
+      });
+      return await modal.present();
+    }
 }

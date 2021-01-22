@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { NavParams, ModalController } from "@ionic/angular";
+import { PhotosService } from "src/app/services/photos.service";
 
 @Component({
   selector: "app-photo",
@@ -13,13 +14,14 @@ export class PhotoPage implements OnInit {
 
   constructor(
     private navParams: NavParams,
-    private modalController: ModalController
+    private modalController: ModalController, private photoService: PhotosService
   ) {
     this.imageData = this.navParams.get("imageData");
-    this.collections = this.navParams.get("collections");
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.photoService.observableUserInfo$.subscribe(data => this.collections = data.collections);
+  }
 
   dismiss() {
     this.modalController.dismiss(this.imageData);
@@ -35,8 +37,14 @@ export class PhotoPage implements OnInit {
     } else {
       this.imageData = { ...this.imageData, liked: true };
     }
+    this.updateLikes(this.imageData);
   }
   addPhotoToCollection(collectionName){
-    this.imageData = {...this.imageData, collection: collectionName.value};  
+    this.imageData = {...this.imageData, collection: collectionName.value};
+    this.updateLikes(this.imageData);
+  }
+
+  updateLikes(image){
+    this.photoService.updateLikes(image);
   }
 }

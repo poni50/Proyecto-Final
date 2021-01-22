@@ -16,7 +16,7 @@
       
       <ion-col *ngFor="let post of collection.photos" size=12>
         <div class='imgs' >          
-          <ion-img [src]="post.urls.regular" [style]="'width: 100%;height:'+post.height" ></ion-img>         
+          <ion-img [src]="post.urls.regular" [style]="'width: 100%;height:'+post.height" (click)='openImageModal(post)' ></ion-img>         
         </div>               
       </ion-col>    
       <!--<ion-spinner *ngIf="isLoading"></ion-spinner>   -->

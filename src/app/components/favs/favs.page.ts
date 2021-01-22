@@ -36,7 +36,7 @@ export class FavsPage implements OnInit {
   async openImageModal(image: any) {
     const modal = await this.modalController.create({
       component: PhotoPage,
-      componentProps: { imageData: image, collections: this.collections },
+      componentProps: { imageData: image },
     });
     modal.onDidDismiss().then((data: any) => {
         this.photoService.updateLikes(data.data);
@@ -49,10 +49,7 @@ export class FavsPage implements OnInit {
     const modal = await this.modalController.create({
       component: CollectionPage,
       componentProps: {collection: collection},
-    });
-    modal.onDidDismiss().then((data: any) => {
-        //this.photoService.onModalDislike(data.data);
-    });
+    });   
 
     return await modal.present();
   }

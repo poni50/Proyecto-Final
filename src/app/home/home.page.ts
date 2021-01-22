@@ -31,6 +31,7 @@ export class HomePage implements OnInit {
       e => {
         this.likedPhotos = e.likedPhotos;
         this.collections = e.collections;
+        this.photoService.checkLikes(this.postsList);
     });
     this.router.events.subscribe( () => this.photoService.checkLikes(this.postsList));
   }
@@ -69,7 +70,7 @@ export class HomePage implements OnInit {
   async openImageModal(image: any) {
     const modal = await this.modalController.create({
       component: PhotoPage,
-      componentProps: { imageData: image, collections: this.collections },
+      componentProps: { imageData: image},
     });
     modal.onDidDismiss().then((data: any) => {
       this.postsList = this.photoService.onModalDismiss(

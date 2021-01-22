@@ -37,6 +37,7 @@ export class PhotosService {
   }
 
   addToCollection() {
+<<<<<<< HEAD
     console.log(this.userInfo.likedPhotos);
     this.userInfo.collections.forEach((collection) => {
       this.userInfo.likedPhotos.forEach((photo) =>
@@ -44,6 +45,18 @@ export class PhotosService {
           ? collection.photos.push(photo)
           : null
       );
+=======
+    this.userInfo.collections = this.userInfo.collections.map((collection) => {
+      collection.photos = [];
+      this.userInfo.likedPhotos.forEach((photo) =>{
+        if(photo.collection == collection.name){
+          collection.photos.push(photo);
+          console.log("PUSH");
+        }
+      });
+      console.log(collection);
+      return collection
+>>>>>>> 2b9bf3da03dbd91bfbb56ee066104d45d8de4e9a
     });
     
     
@@ -77,11 +90,7 @@ export class PhotosService {
         } else {
           e = { ...e, liked: true };
         }
-        this.userInfo.likedPhotos = e.liked
-          ? this.addPhoto(e, this.userInfo.likedPhotos)
-          : this.removePhoto(e, this.userInfo.likedPhotos);
-        this.addToCollection();
-        this.observableUserInfo$.next(this.userInfo);
+        this.updateLikes(e);
       }
       return e;
     });
@@ -92,32 +101,25 @@ export class PhotosService {
     arr = arr.map((e) => {
       if (e.id == image.id) {
         e = image;
-
-        this.userInfo.likedPhotos = e.liked
-          ? this.addPhoto(e, this.userInfo.likedPhotos)
-          : this.removePhoto(e, this.userInfo.likedPhotos);
-        this.addToCollection();
-        this.observableUserInfo$.next(this.userInfo);
+        this.updateLikes(e);
       }
       return e;
     });
     return arr;
   }
 
-  onModalDislike(image: any) {
-    if (!image.liked) {
-      this.userInfo.likedPhotos = this.removePhoto(
-        image,
-        this.userInfo.likedPhotos
-      );
-    }
+  updateLikes(image: any){
+    this.userInfo.likedPhotos = image.liked ? this.addPhoto(image, this.userInfo.likedPhotos): this.removePhoto(image, this.userInfo.likedPhotos);
     this.addToCollection();
     this.observableUserInfo$.next(this.userInfo);
   }
 
   addPhoto(image: any, arr: any[]) {
-    if (arr.findIndex((e) => e.id == image.id) < 0) {
+    const imgIndex = arr.findIndex((e) => e.id == image.id);
+    if (imgIndex < 0) {
       arr = [...arr, image];
+    } else {
+      arr[imgIndex] = image;
     }
     return arr;
   }

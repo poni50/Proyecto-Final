@@ -39,7 +39,7 @@ export class FavsPage implements OnInit {
       componentProps: { imageData: image, collections: this.collections },
     });
     modal.onDidDismiss().then((data: any) => {
-        this.photoService.onModalDislike(data.data);
+        this.photoService.updateLikes(data.data);
     });
 
     return await modal.present();

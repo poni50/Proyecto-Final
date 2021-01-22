@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, NavParams } from '@ionic/angular';
+import { AlertController, ModalController, NavParams } from '@ionic/angular';
+import { PhotosService } from 'src/app/services/photos.service';
 
 @Component({
   selector: 'app-collection',
@@ -7,15 +8,15 @@ import { ModalController, NavParams } from '@ionic/angular';
   styleUrls: ['./collection.page.scss'],
 })
 export class CollectionPage implements OnInit {
-  collections: any;
+  collection: any;
 
-  constructor(private navParams: NavParams, private modalController: ModalController) {
-    this.collections = this.navParams.get("collections");
+  constructor(private navParams: NavParams, private modalController: ModalController, private photoService: PhotosService, private alertController: AlertController) {
+    this.collection = this.navParams.get("collection");
    }
 
   ngOnInit() {
 
-    console.log(this.collections);
+    console.log(this.collection);
     
 
   }
@@ -23,4 +24,31 @@ export class CollectionPage implements OnInit {
   dismiss() {
     this.modalController.dismiss();
   }
+
+  async deleteCollection(name: string){
+      const alert = await this.alertController.create({
+        cssClass: 'collectionAlert',
+        header: 'Delete Collection',
+        message: 'Are you sure want to delete this collection?',
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: () => {                          
+            }
+          }, {
+            text: 'Ok',
+            handler: () => {
+              this.photoService.deleteCollection(name);  
+              this.dismiss();
+            }
+          }
+        ]
+      });
+  
+      await alert.present();
+    }
+    
+  
 }

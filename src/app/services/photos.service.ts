@@ -37,15 +37,6 @@ export class PhotosService {
   }
 
   addToCollection() {
-<<<<<<< HEAD
-    console.log(this.userInfo.likedPhotos);
-    this.userInfo.collections.forEach((collection) => {
-      this.userInfo.likedPhotos.forEach((photo) =>
-        photo.collection == collection.name
-          ? collection.photos.push(photo)
-          : null
-      );
-=======
     this.userInfo.collections = this.userInfo.collections.map((collection) => {
       collection.photos = [];
       this.userInfo.likedPhotos.forEach((photo) =>{
@@ -56,7 +47,6 @@ export class PhotosService {
       });
       console.log(collection);
       return collection
->>>>>>> 2b9bf3da03dbd91bfbb56ee066104d45d8de4e9a
     });
     
     
@@ -111,6 +101,18 @@ export class PhotosService {
   updateLikes(image: any){
     this.userInfo.likedPhotos = image.liked ? this.addPhoto(image, this.userInfo.likedPhotos): this.removePhoto(image, this.userInfo.likedPhotos);
     this.addToCollection();
+    this.observableUserInfo$.next(this.userInfo);
+  }
+
+  deleteCollection(name: string){
+    this.userInfo.collections = this.userInfo.collections.filter(e => e.name != name);
+    this.userInfo.likedPhotos = this.userInfo.likedPhotos.map(image => {
+      if (image.collection == name){
+        image.collection = '';
+      }
+      return image;
+    });
+    console.log(this.userInfo);
     this.observableUserInfo$.next(this.userInfo);
   }
 

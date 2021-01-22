@@ -1,8 +1,11 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>collection</ion-title>
-    <ion-button (click)="dismiss()" fill="clear" color="danger">
-      <ion-icon name="close"></ion-icon>
+  <ion-toolbar>    
+    <h2 >{{collection.name}}</h2>
+    <ion-button (click)="dismiss()" fill="clear" slot="start">
+      <ion-icon name="arrow-back"></ion-icon>
+    </ion-button>
+    <ion-button (click)="deleteCollection(collection.name)" fill="clear" slot="end" color='danger'>
+      <p>Delete</p>
     </ion-button>
   </ion-toolbar>
 </ion-header>
@@ -10,7 +13,8 @@
 <ion-content>
   <ion-grid>
     <ion-row>
-      <ion-col *ngFor="let post of collections" size=12>
+      
+      <ion-col *ngFor="let post of collection.photos" size=12>
         <div class='imgs' >          
           <ion-img [src]="post.urls.regular" [style]="'width: 100%;height:'+post.height" ></ion-img>         
         </div>               

@@ -48,7 +48,7 @@ export class FavsPage implements OnInit {
   async openCollectionModal(collection: any){
     const modal = await this.modalController.create({
       component: CollectionPage,
-      componentProps: {collections: this.collections},
+      componentProps: {collection: collection},
     });
     modal.onDidDismiss().then((data: any) => {
         //this.photoService.onModalDislike(data.data);
@@ -73,8 +73,7 @@ export class FavsPage implements OnInit {
           text: 'Cancel',
           role: 'cancel',
           cssClass: 'secondary',
-          handler: () => {            
-            console.log('Confirm Cancel');
+          handler: () => {                        
           }
         }, {
           text: 'Ok',

@@ -2,18 +2,9 @@
 
   <h2>Collections</h2>
   <div style="height: 100px;" class='container'>
-<<<<<<< HEAD
-    <div class="collectionsContainer" *ngFor="let collection of collections" (click)='openCollectionModal(collections)'>
-      <img *ngIf="collection.photos[0]; else placeholderImg" [src]="collection.photos[0].urls.thumb" style="width: 80px; height: 80px;"/>
-      <ng-template #placeholderImg>
+    <div class="collectionsContainer" *ngFor="let collection of collections" (click)='openCollectionModal(collection)'>
         <ion-icon name="folder" style="font-size: 80px; padding: 0px;"></ion-icon>
-      </ng-template>
       <p style="margin: 5px;">{{collection.name}}</p>
-=======
-    <div class="collectionsContainer" *ngFor="let collection of collections">
-      <ion-icon name="folder" style="font-size: 80px; padding: 0px;"></ion-icon>
-      <p style="margin: 5px; text-align: center;">{{collection.name}}</p>
->>>>>>> 2b9bf3da03dbd91bfbb56ee066104d45d8de4e9a
     </div>
 
     <div class="collectionsContainer" (click)='createCollectionAlert()'>

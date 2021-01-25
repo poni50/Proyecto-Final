@@ -19,10 +19,6 @@ const routes: Routes = [
     path: 'landing',
     loadChildren: () => import('./components/landing/landing.module').then( m => m.LandingPageModule)
   },
-  {
-    path: 'search',
-    loadChildren: () => import('./components/search/search.module').then( m => m.SearchPageModule)
-  },
 
 ];
 

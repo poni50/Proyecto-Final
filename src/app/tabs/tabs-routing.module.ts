@@ -20,6 +20,10 @@ const routes: Routes = [
       {
         path: 'favs',
         loadChildren: () => import('../components/favs/favs.module').then( m => m.FavsPageModule)
+      },
+      {
+        path: 'profile',
+        loadChildren: () => import('../components/profile/profile.module').then( m => m.ProfilePageModule)
       },/*
       {
         path: '',

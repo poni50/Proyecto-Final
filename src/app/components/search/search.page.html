@@ -1,26 +1,24 @@
-<!--<ion-header>
-  <ion-toolbar>
-    <ion-title>search</ion-title>
-  </ion-toolbar>
-</ion-header>-->
-
 <ion-content>
   <ion-item>
     <ion-label position='floating'>Search</ion-label>
     <ion-input #value type='text' name='search' (ionChange)='searchPhoto(value)'></ion-input>
   </ion-item>
 
-  <ion-grid>
+  <ion-spinner *ngIf="isLoading"></ion-spinner>   
+
+  <ion-grid *ngIf="!isLoading">
     <ion-row>
-      <ion-col *ngFor="let photos of filteredPhotos" size=12>
+      <ion-col *ngFor="let photos of filteredPhotos" size-lg="3" size-md="4" size="12">
         <div class='imgs' >          
           <ion-img [src]="photos.urls.regular" [style]="'width: 100%;height:'+photos.height" (click)='openImageModal(photos)'></ion-img>
          <ion-icon [name]='photos.liked ? "heart" : "heart-outline"' (click)='likeImage(photos)' *ngIf='!isLoading'></ion-icon>
         </div>               
-      </ion-col>    
-      <ion-spinner *ngIf="isLoading"></ion-spinner>   
+      </ion-col>
       <ion-col size=12>
-        <ion-button fill='clear' expand="full" (click)='showMore()' *ngIf='!isLoading && filteredPhotos.length > 0'>Show more</ion-button>   
+        <ion-infinite-scroll threshold="200px" (ionInfinite)="showMore($event)">
+          <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="Loading more images">
+          </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
       </ion-col>
     </ion-row>
   </ion-grid>

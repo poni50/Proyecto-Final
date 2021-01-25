@@ -16,9 +16,9 @@
   <h2>Photos</h2>
   <ion-grid>
     <ion-row>
-      <ion-col *ngFor="let post of likedPhotos" size=12>
+      <ion-col *ngFor="let post of likedPhotos" size-lg="3" size-md="4" size="12">
         <div class='imgs'>
-          <ion-img [src]="post.urls.regular" style="width: 100%;" (click)='openImageModal(post)' ></ion-img>
+          <ion-img [src]="post.urls.regular" style="width: 100%;" (click)='openImageModal(post)'></ion-img>
         </div>
       </ion-col>
     </ion-row>

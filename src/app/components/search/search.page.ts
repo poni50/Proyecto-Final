@@ -65,10 +65,9 @@ export class SearchPage implements OnInit {
     }
   }
 
-  async showMore() {
+  async showMore(event: any) {
     console.log(this.pageNumber);
     
-    this.isLoading = true;
     this.pageNumber++;
     let imgArray: any = await this.photoService.searchPhotos(
       `https://api.unsplash.com/search/photos/?query=${this.search}&page=${this.pageNumber}&client_id=7leTnM2XWB-w59oqKpugx_DLVrRvT1p6wGe_uobx0zE`
@@ -76,15 +75,18 @@ export class SearchPage implements OnInit {
     imgArray.forEach((e) => {
       this.filteredPhotos = this.photoService.addPhoto(e, this.filteredPhotos);
     });
-    this.isLoading = false;
+
+    event.target.complete();
   }
 
   async loadSearchImages(){
+    this.isLoading = true;
     this.pageNumber = 1;
     this.filteredPhotos = await this.photoService.searchPhotos(
       `https://api.unsplash.com/search/photos/?query=${this.search}&page=${this.pageNumber}&client_id=7leTnM2XWB-w59oqKpugx_DLVrRvT1p6wGe_uobx0zE`
     )
     console.log("RESULT", this.filteredPhotos);
+    this.isLoading = false;
   }
 
   async openImageModal(image: any) {

@@ -1,21 +1,29 @@
-.imgs{  
-    ion-icon{
-      position: absolute;
-      bottom:12px;
-      z-index: 100;
-      margin-left: 88%;
-      font-size: 30px;
-      color:pink;
-    }
-  }
+ion-item {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 120;
+}
 
-  ion-item{
-    position:fixed;
-    top: 0;
-    width:100%;
-    z-index: 120;
-  }
+ion-grid {
+  margin-top: 60px;
+}
 
-  ion-grid{
-    margin-top: 60px;
+ion-col{
+  width: 100%;
+  height: fit-content;
+}
+
+.imgs{
+  width: 100%;
+  min-height: 100px;
+  height: fit-content;
+  ion-icon{
+    position: absolute;
+    bottom:12px;
+    right: 10px;
+    z-index: 100;
+    font-size: 30px;
+    color:pink;
   }
+}

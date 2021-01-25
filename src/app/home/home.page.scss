@@ -26,14 +26,20 @@
   text-decoration: none;
 }
 
+ion-col{
+  width: 100%;
+  height: fit-content;
+}
+
 .imgs{
   width: 100%;
-  min-height: 200px;
+  min-height: 100px;
+  height: fit-content;
   ion-icon{
     position: absolute;
     bottom:12px;
+    right: 10px;
     z-index: 100;
-    margin-left: 88%;
     font-size: 30px;
     color:pink;
   }

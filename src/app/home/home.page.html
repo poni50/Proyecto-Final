@@ -1,9 +1,9 @@
 <ion-content [scrollEvents]="true">
   <ion-grid>
     <ion-row>
-      <ion-col *ngFor="let post of postsList" size=12>
+      <ion-col *ngFor="let post of postsList" size-lg="3" size-md="4" size="12">
         <div class='imgs' *ngIf='!isLoading'>
-          <ion-img [src]="post.urls.regular" [style]="'width: 100%;height:'+post.height" (click)='openImageModal(post)'></ion-img>
+          <ion-img [src]="post.urls.regular" (click)='openImageModal(post)'></ion-img>
           <ion-icon [name]='post.liked ? "heart" : "heart-outline"' (click)='likeImage(post)'></ion-icon>
         </div>               
       </ion-col>

@@ -14,6 +14,7 @@ import {
   Camera,
 } from "@capacitor/core";
 import { Platform } from '@ionic/angular';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: "app-profile",
@@ -29,7 +30,8 @@ export class ProfilePage implements OnInit {
   private PHOTO_STORAGE: string = "photo";
   fg: FormGroup;
 
-  constructor(private photoService: PhotosService, private auth: AuthService, private router: Router, private platform: Platform, private formBuilder: FormBuilder) {
+  constructor(private photoService: PhotosService, private auth: AuthService, private router: Router, private platform: Platform, private formBuilder: FormBuilder,
+    private sanitizer: DomSanitizer) {
     this.platform = platform;
   }
 
@@ -62,8 +64,8 @@ export class ProfilePage implements OnInit {
 
   sendData(){    
     this.userInfo.username = this.fg.get('username').value;   
-    if(this.photo){
-      this.userInfo.avatar = this.photo.webviewPath;
+    if(this.photo){      
+      this.userInfo.avatar = `data:image/jpeg;base64,${this.photo.webviewPath}`;    
     }  
     this.photoService.updateUser(this.userInfo);
   }

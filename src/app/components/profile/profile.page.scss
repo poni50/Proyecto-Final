@@ -6,11 +6,14 @@
     align-items: center;       
 }
 
-.editInfo{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.editInfo{   
+    form{
+        width:100%;
+        display: flex;
+        flex-direction: column;   
+        justify-content: center;
+        align-items: center;
+    }    
 }
 
 .buttons{

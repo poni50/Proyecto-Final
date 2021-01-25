@@ -72,7 +72,7 @@ export class ProfilePage implements OnInit {
     this.addNewToGallery().then((data) => {
       this.photo = data;
     });
-  } 
+  }
 
   private async readAsBase64(cameraPhoto: CameraPhoto) {
     // "hybrid" will detect Cordova or Capacitor
@@ -81,7 +81,6 @@ export class ProfilePage implements OnInit {
       const file = await Filesystem.readFile({
         path: cameraPhoto.path
       });
-  
       return file.data;
     }
     else {

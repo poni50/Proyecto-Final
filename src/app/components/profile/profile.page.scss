@@ -6,6 +6,13 @@
     align-items: center;       
 }
 
+.editInfo{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .buttons{
     display:flex;
     flex-flow:column nowrap;

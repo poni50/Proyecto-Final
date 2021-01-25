@@ -1,4 +1,3 @@
-import { reset } from './../../../../../redux/src/app/counter.actions';
 import { Component, OnInit } from "@angular/core";
 import { ModalController } from "@ionic/angular";
 import { PhotoPage } from "../photo/photo.page";

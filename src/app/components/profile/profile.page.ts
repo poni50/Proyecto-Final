@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { AuthService } from "./../../services/auth.service";
 import { PhotosService } from "./../../services/photos.service";
 import { Component, OnInit } from "@angular/core";
@@ -12,7 +13,7 @@ export class ProfilePage implements OnInit {
   userInfo: any;
   defaultAvatar = '../../../assets/avatar.png';
 
-  constructor(private photoService: PhotosService, private auth: AuthService) {}
+  constructor(private photoService: PhotosService, private auth: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.loadData();
@@ -25,10 +26,13 @@ export class ProfilePage implements OnInit {
     if (!this.photoService.userInfo) {
       this.photoService.isLoading = this.photoService.loadImages(this.user.uid);
     }
-    this.photoService.observableUserInfo$.subscribe((data) => {    
-      console.log(data);     
+    this.photoService.observableUserInfo$.subscribe((data) => {              
       this.userInfo = data;      
-    });
-    
+    });    
+  }
+
+  logout() {
+    this.auth.logout();
+    this.router.navigate(["/landing"]);
   }
 }

@@ -26,11 +26,11 @@ export class PhotosService {
 
   constructor(private http: HttpClient, private storage: Storage) {}
 
-  async loadImages(userId: string) {
+  async loadImages(userId: string, username?: string) {
     this.uid = userId;
     const data = await this.storage.get(userId);
     this.observableUserInfo$.next(
-      data ? data : { username: this.uid, avatar: '../../assets/avatar.png', likedPhotos: [], collections: []  }
+      data ? data : { username: username ? username : 'anon', avatar: '../../assets/avatar.png', likedPhotos: [], collections: []  }
     );
     this.observableUserInfo$.subscribe((e) => {
       this.userInfo = e;
@@ -62,7 +62,8 @@ export class PhotosService {
   }
 
   async searchPhotos(url) {
-    let searchArray: any = await this.http.get(url).toPromise();
+    let searchArray: any = await this.http.get(url).toPromise();    
+    
     searchArray = [...searchArray.results];
     searchArray = this.checkLikes(searchArray);
     return searchArray;

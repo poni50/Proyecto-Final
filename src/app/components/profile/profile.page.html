@@ -1,14 +1,11 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>profile</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
 <div class='profileInfo'>
-  <ion-avatar><img [src]="userInfo?.avatar"/></ion-avatar>
+  <ion-avatar><ion-img [src]="userInfo?.avatar"></ion-img></ion-avatar>
   <p>{{user?.email}}</p>
   <p>{{userInfo?.username}}</p>
 </div>
-<div class='buttons'></div>
+<div class='buttons'>
+  <ion-button fill='clear'>Edit</ion-button>
+  <ion-button fill='clear' (click)='logout()' color="danger">Logout</ion-button>
+</div>
 </ion-content>

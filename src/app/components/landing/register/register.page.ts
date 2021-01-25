@@ -1,3 +1,4 @@
+import { PhotosService } from 'src/app/services/photos.service';
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -16,7 +17,8 @@ export class RegisterPage implements OnInit {
     private modalController: ModalController,
     private fb: FormBuilder,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private photoService: PhotosService
   ) {}
 
   ngOnInit() {
@@ -62,12 +64,11 @@ export class RegisterPage implements OnInit {
   }
 
   register() {
-
-    //TODO
     this.auth.register(
       this.fg.get('email').value,
       this.fg.get('password').value,
-    ).then(() => {
+    ).then((data) => {
+      this.photoService.loadImages(data.user.uid, this.fg.get('username').value);
       this.router.navigate(["/tabs/home"]);
       this.dismiss();
     });

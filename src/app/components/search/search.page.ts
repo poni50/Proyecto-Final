@@ -1,3 +1,4 @@
+import { reset } from './../../../../../redux/src/app/counter.actions';
 import { Component, OnInit } from "@angular/core";
 import { ModalController } from "@ionic/angular";
 import { PhotoPage } from "../photo/photo.page";
@@ -52,25 +53,27 @@ export class SearchPage implements OnInit {
   }
 
   searchPhoto(searchName) {
-    this.search = searchName.value.trim();
-    console.log(this.search);
+    if(searchName.value != ''){
+      this.search = searchName.value.trim();
     
-    this.search.replaceAll(' ', '-');
-
-    this.timeOutId ? clearTimeout(this.timeOutId): null;
-    this.timeOutId =  setTimeout(()=>{
-      this.loadSearchImages();
-      this.search = '';
-    },2000);
-    
+      this.search.replaceAll(' ', '-');
+  
+      this.timeOutId ? clearTimeout(this.timeOutId): null;
+      this.timeOutId =  setTimeout(()=>{
+        this.loadSearchImages();
+        searchName.value = '';
+      },2000);      
+    }
   }
 
   async showMore() {
+    console.log(this.pageNumber);
+    
     this.isLoading = true;
     this.pageNumber++;
     let imgArray: any = await this.photoService.searchPhotos(
       `https://api.unsplash.com/search/photos/?query=${this.search}&page=${this.pageNumber}&client_id=7leTnM2XWB-w59oqKpugx_DLVrRvT1p6wGe_uobx0zE`
-    );
+    );    
     imgArray.forEach((e) => {
       this.filteredPhotos = this.photoService.addPhoto(e, this.filteredPhotos);
     });

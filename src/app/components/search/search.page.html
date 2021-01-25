@@ -20,7 +20,7 @@
       </ion-col>    
       <ion-spinner *ngIf="isLoading"></ion-spinner>   
       <ion-col size=12>
-        <ion-button fill='clear' expand="full" (click)='showMore()' *ngIf='!isLoading'>Show more</ion-button>   
+        <ion-button fill='clear' expand="full" (click)='showMore()' *ngIf='!isLoading && filteredPhotos.length > 0'>Show more</ion-button>   
       </ion-col>
     </ion-row>
   </ion-grid>

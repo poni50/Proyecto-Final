@@ -1,8 +1,10 @@
 <ion-content [scrollEvents]="true">
-  <ion-grid>
+  <ion-spinner *ngIf="isLoading"></ion-spinner>   
+
+  <ion-grid *ngIf="!isLoading">
     <ion-row>
       <ion-col *ngFor="let post of postsList" size-lg="3" size-md="4" size="12">
-        <div class='imgs' *ngIf='!isLoading'>
+        <div class='imgs'>
           <ion-img [src]="post.urls.regular" (click)='openImageModal(post)'></ion-img>
           <ion-icon [name]='post.liked ? "heart" : "heart-outline"' (click)='likeImage(post)'></ion-icon>
         </div>               
@@ -13,7 +15,6 @@
           </ion-infinite-scroll-content>
         </ion-infinite-scroll>
       </ion-col>
-      <ion-spinner *ngIf="isLoading"></ion-spinner>   
     </ion-row>
   </ion-grid>
 </ion-content>

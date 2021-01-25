@@ -5,5 +5,10 @@
 </ion-header>
 
 <ion-content>
-
+<div class='profileInfo'>
+  <ion-avatar><img [src]="userInfo?.avatar"/></ion-avatar>
+  <p>{{user?.email}}</p>
+  <p>{{userInfo?.username}}</p>
+</div>
+<div class='buttons'></div>
 </ion-content>

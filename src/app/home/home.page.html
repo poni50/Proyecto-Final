@@ -7,7 +7,7 @@
   <ion-grid>
     <ion-row>
       <ion-col *ngFor="let post of postsList" size=12>
-        <div class='imgs' >          
+        <div class='imgs'  [style]="'width: 100%;height:'+post.height">          
           <ion-img [src]="post.urls.regular" [style]="'width: 100%;height:'+post.height" (click)='openImageModal(post)'></ion-img>
           <ion-icon [name]='post.liked ? "heart" : "heart-outline"' (click)='likeImage(post)' *ngIf='!isLoading'></ion-icon>
         </div>               

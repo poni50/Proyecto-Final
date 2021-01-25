@@ -14,6 +14,7 @@ export class LandingPage implements OnInit {
     "../../../assets/fondo/bcn.jpg",
     "../../../assets/fondo/snow.jpg",
     "../../../assets/fondo/sunset.jpg",
+    "../../../assets/fondo/stairs.jpg",
   ];
   imgL: string;
   isLoading: boolean;

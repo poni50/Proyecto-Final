@@ -9,6 +9,8 @@ interface PhotoCollection {
 }
 
 interface UserInfo {
+  username?: string;  
+  avatar?: string;
   likedPhotos?: any[];
   collections?: PhotoCollection[];
 }
@@ -28,7 +30,7 @@ export class PhotosService {
     this.uid = userId;
     const data = await this.storage.get(userId);
     this.observableUserInfo$.next(
-      data ? data : { likedPhotos: [], collections: [] }
+      data ? data : { username: this.uid, avatar: '../../assets/avatar.png', likedPhotos: [], collections: []  }
     );
     this.observableUserInfo$.subscribe((e) => {
       this.userInfo = e;

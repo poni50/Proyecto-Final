@@ -1,11 +1,23 @@
 <ion-content>
 <div class='profileInfo'>
-  <ion-avatar><ion-img [src]="userInfo?.avatar"></ion-img></ion-avatar>
-  <p>{{user?.email}}</p>
+  <ion-avatar><ion-img [src]="photo ? photo.webviewPath : userInfo?.avatar"></ion-img></ion-avatar>
+  <div class="addPhoto"><ion-button class='sendPhoto' fill='clear' (click)='addPhotoToGallery()'>Add photo</ion-button></div>
   <p>{{userInfo?.username}}</p>
+  <p>{{user?.email}}</p>
+  
+</div>
+
+<div class="editInfo" *ngIf='edit'>
+  <form [formGroup]="fg" (submit)='sendData()'>
+    <ion-item>
+      <ion-label position="floating">Username</ion-label>
+      <ion-input type="text" formControlName="username"></ion-input>
+    </ion-item>    
+    <ion-button type='submit'>Submit</ion-button>
+  </form>
 </div>
 <div class='buttons'>
-  <ion-button fill='clear'>Edit</ion-button>
+  <ion-button  #send fill='clear' (click)='editProfile()'>{{edit ? 'Cancel' : 'Edit'}}</ion-button>
   <ion-button fill='clear' (click)='logout()' color="danger">Logout</ion-button>
 </div>
 </ion-content>

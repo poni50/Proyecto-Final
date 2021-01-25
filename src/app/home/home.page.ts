@@ -50,7 +50,8 @@ export class HomePage implements OnInit {
     this.isLoading = false;
   }
 
-  async showMore() {
+  async showMore(event: any) {
+    console.log("END");
     this.pageNumber++;
     let imgArray: any = await this.photoService.getPhotos(
       `https://api.unsplash.com/photos/?page=${this.pageNumber}&client_id=7leTnM2XWB-w59oqKpugx_DLVrRvT1p6wGe_uobx0zE`
@@ -58,6 +59,7 @@ export class HomePage implements OnInit {
     imgArray.forEach((e) => {
       this.postsList = this.photoService.addPhoto(e, this.postsList);
     });
+    event.target.complete();
   }
 
   logout() {
@@ -83,4 +85,5 @@ export class HomePage implements OnInit {
 
     return await modal.present();
   }
+  
 }

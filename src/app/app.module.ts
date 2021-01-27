@@ -15,6 +15,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from "src/environments/environment";
 import { IonicStorageModule } from "@ionic/storage";
 import { CommonModule } from "@angular/common";
+import { PhotoPageModule } from "./components/photo/photo.module";
 
 @NgModule({
   declarations: [AppComponent],
@@ -27,7 +28,8 @@ import { CommonModule } from "@angular/common";
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     IonicStorageModule.forRoot(),
-    CommonModule
+    CommonModule,
+    PhotoPageModule
   ],
   providers: [
     StatusBar,

@@ -1,4 +1,3 @@
-import { PhotoPage } from './../components/photo/photo.page';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
@@ -15,6 +14,6 @@ import { HomePageRoutingModule } from './home-routing.module';
     IonicModule,
     HomePageRoutingModule,
   ],
-  declarations: [HomePage, PhotoPage]
+  declarations: [HomePage]
 })
 export class HomePageModule {}

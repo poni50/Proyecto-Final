@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { NavParams, ModalController } from "@ionic/angular";
+import { NavParams, ModalController, ToastController } from "@ionic/angular";
 import { PhotosService } from "src/app/services/photos.service";
 import { Filesystem, FilesystemDirectory, Plugins } from "@capacitor/core";
 const { Share } = Plugins;
@@ -21,7 +21,7 @@ export class PhotoPage implements OnInit {
     private modalController: ModalController,
     private photoService: PhotosService,
     private platform: Platform,
-    private ngNavigatorShareService: NgNavigatorShareService
+    private toastCtrl: ToastController,
   ) {
     this.imageData = this.navParams.get("imageData");
     this.platform = platform;
@@ -67,52 +67,45 @@ export class PhotoPage implements OnInit {
         dialogTitle: "Share with buddies",
       });
     } else {
-      this.ngNavigatorShareService.share({
-        title: 'My Awesome app',
-        text: 'hey check out my Share button',
-        url: 'https://developers.google.com/web'
-      }).then( (response) => {
-        console.log(response);
-      })
-      .catch( (error) => {
-        console.log(error);
+      let toast = await this.toastCtrl.create({
+        message: 'Sharing is only available on the mobile app',
+        duration: 3000,
+        position: 'bottom'
       });
+
+      toast.present();
     }
   }
 
-  async convertBlobToBase64(blob: Blob){
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onerror = reject;
-      reader.onload = () => {
+  convertBlobToBase64 = (blob: Blob) => new Promise((resolve, reject) => {
+    const reader = new FileReader;
+    reader.onerror = reject;
+    reader.onload = () => {
         resolve(reader.result);
-      };
-      reader.readAsDataURL(blob);
-    });
-  }
+    };
+    reader.readAsDataURL(blob);
+  });
 
   async downloadImage() {
-    const response = await fetch('https://cors-anywhere.herokuapp.com/'+this.imageData.links.download+'?client_id=7leTnM2XWB-w59oqKpugx_DLVrRvT1p6wGe_uobx0zE', {      
-     
-      method: 'GET',
+    try{
+      const response = await fetch('https://cors-anywhere.herokuapp.com/'+this.imageData.links.download+'?client_id=7leTnM2XWB-w59oqKpugx_DLVrRvT1p6wGe_uobx0zE', { 
+        method: 'GET',
+      });
+      const image = await response.blob();
 
-    });
-    const image = await response.blob();
+      console.log("BLOB PHOTO", image);
+      
+      const base64Data: any = await this.convertBlobToBase64(image) as string;
+      console.log("BASE64 PHOTO", base64Data);
+      const savedFile = await Filesystem.writeFile({
+        path: 'Downloads/' + this.imageData.id + '.jpg',
+        data: base64Data,
+        directory: FilesystemDirectory.Data,
+      });
 
-    console.log(image);
-    
-    // convert to a Blob
-    /*const blob = await response.blob();
-    // convert to base64 data, which the Filesystem plugin requires
-    const base64Data = await this.convertBlobToBase64(blob);
-
-    const savedFile = await Filesystem.writeFile({
-      path: fileName,
-      data: base64Data,
-      directory: FilesystemDirectory.Data,
-    });
-
-    // helper function*/
-     
+      console.log(savedFile.uri);
+    } catch (err){
+      console.log(err);
+    }
   }
 }

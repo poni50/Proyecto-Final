@@ -36,9 +36,7 @@ export class ProfilePage implements OnInit {
   }
 
   ngOnInit() {
-    this.loadData();     
-   
-    
+    this.loadData();
   }
 
   async loadData() {
@@ -48,10 +46,27 @@ export class ProfilePage implements OnInit {
       this.photoService.isLoading = this.photoService.loadImages(this.user.uid);
     }
     this.photoService.observableUserInfo$.subscribe((data) => {              
-      this.userInfo = data;    
-     // this.userInfo.avatar = this.sanitizer.bypassSecurityTrustUrl(this.userInfo.avatar);  
-      console.log(this.userInfo);
+      this.userInfo = data;
+      console.log("USER", this.userInfo);
+      console.log("AVATAR", this.userInfo.avatar);
+      if(this.userInfo.avatar){
+        console.log("ENTERED IF");
+        this.loadImageStorage(this.userInfo.avatar).then((data) => this.userInfo.avatar.webviewPath = data);
+      }
     });    
+  }
+
+  // Leer la imagen desde el disco duro en memoria
+  async loadImageStorage(photo){
+    console.log("PHOTO", photo);
+    
+    const readFile = await Filesystem.readFile({
+      path: photo.filepath,
+      directory: FilesystemDirectory.Data
+    });
+
+    // Web platform only: Load the photo as base64 data
+    return `data:image/jpeg;base64,${readFile.data}`;
   }
 
   editProfile(){    
@@ -67,7 +82,7 @@ export class ProfilePage implements OnInit {
   sendData(){    
     this.userInfo.username = this.fg.get('username').value;   
     if(this.photo){            
-      this.userInfo.avatar = this.photo.webviewPath;    
+      this.userInfo.avatar = this.photo;    
     }  
     this.photoService.updateUser(this.userInfo);
     this.edit = false;
@@ -79,8 +94,41 @@ export class ProfilePage implements OnInit {
     });
   }
 
+  async addNewToGallery() {
+    const capturedPhoto = await Camera.getPhoto({
+       resultType: CameraResultType.Uri,
+       source: CameraSource.Camera,
+       quality: 100
+     });
+     const savedImageFile = await this.savePicture(capturedPhoto);
+     
+     return savedImageFile;
+  }
+
+  private async savePicture(cameraPhoto: CameraPhoto) {   
+    const base64Data = await this.readAsBase64(cameraPhoto);
+    const fileName = new Date().getTime() + '.jpeg';
+    const savedFile = await Filesystem.writeFile({
+      path: fileName,
+      data: base64Data,
+      directory: FilesystemDirectory.Data
+    });
+    console.log(this.platform);
+    if (this.platform.is('hybrid')) {     
+      return {
+        filepath: savedFile.uri,
+        webviewPath: Capacitor.convertFileSrc(savedFile.uri),
+      };
+    }
+    else {
+      return {
+        filepath: fileName,
+        webviewPath: cameraPhoto.webPath
+      };
+    }
+  }
+
   private async readAsBase64(cameraPhoto: CameraPhoto) {
-    // "hybrid" will detect Cordova or Capacitor
     if (this.platform.is('hybrid')) {
       // Read the file into base64 format
       const file = await Filesystem.readFile({
@@ -105,41 +153,6 @@ export class ProfilePage implements OnInit {
     };
     reader.readAsDataURL(blob);
   });
-
-  private async savePicture(cameraPhoto: CameraPhoto) {   
-    const base64Data = await this.readAsBase64(cameraPhoto);
-
-    const fileName = new Date().getTime() + '.jpeg';
-    const savedFile = await Filesystem.writeFile({
-      path: fileName,
-      data: base64Data,
-      directory: FilesystemDirectory.Data
-    });
-
-    if (this.platform.is('hybrid')) {     
-      return {
-        filepath: savedFile.uri,
-        webviewPath: Capacitor.convertFileSrc(savedFile.uri),
-      };
-    }
-    else {
-      return {
-        filepath: fileName,
-        webviewPath: cameraPhoto.webPath
-      };
-    }
-  }
-
-  async addNewToGallery() {
-   const capturedPhoto = await Camera.getPhoto({
-      resultType: CameraResultType.Uri,
-      source: CameraSource.Camera,
-      quality: 100
-    });
-    const savedImageFile = await this.savePicture(capturedPhoto);
-
-    return savedImageFile;
-  }
 
   logout() {
     this.auth.logout();

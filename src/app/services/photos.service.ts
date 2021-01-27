@@ -40,11 +40,6 @@ export class PhotosService {
 
   updateUser(user: UserInfo){
     this.observableUserInfo$.next(user);
-    
-    this.observableUserInfo$.subscribe((e) => {
-      this.userInfo = e;
-      this.storage.set(this.uid, this.userInfo);
-    });
   }
 
   addToCollection() {

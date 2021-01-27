@@ -48,7 +48,9 @@ export class ProfilePage implements OnInit {
       this.photoService.isLoading = this.photoService.loadImages(this.user.uid);
     }
     this.photoService.observableUserInfo$.subscribe((data) => {              
-      this.userInfo = data;      
+      this.userInfo = data;    
+     // this.userInfo.avatar = this.sanitizer.bypassSecurityTrustUrl(this.userInfo.avatar);  
+      console.log(this.userInfo);
     });    
   }
 
@@ -64,10 +66,11 @@ export class ProfilePage implements OnInit {
 
   sendData(){    
     this.userInfo.username = this.fg.get('username').value;   
-    if(this.photo){      
-      this.userInfo.avatar = `data:image/jpeg;base64,${this.photo.webviewPath}`;    
+    if(this.photo){            
+      this.userInfo.avatar = this.photo.webviewPath;    
     }  
     this.photoService.updateUser(this.userInfo);
+    this.edit = false;
   }
 
   addPhotoToGallery() {

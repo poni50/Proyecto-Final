@@ -3,7 +3,8 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;       
+    align-items: center;    
+       
 }
 
 .editInfo{   
@@ -19,4 +20,5 @@
 .buttons{
     display:flex;
     flex-flow:column nowrap;
+    margin-top: 50%;
 }

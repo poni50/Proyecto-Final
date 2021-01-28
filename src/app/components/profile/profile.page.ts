@@ -78,7 +78,7 @@ export class ProfilePage implements OnInit {
     this.userInfo.username = this.fg.get('username').value;   
     this.photoService.updateUser(this.userInfo);
     let toast = await this.toastCtrl.create({
-      message: 'Update succesfully',
+      message: 'Updated succesfully',
       duration: 3000,
       position: 'bottom'
     });

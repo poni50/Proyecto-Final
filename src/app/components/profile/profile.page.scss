@@ -12,16 +12,9 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-<<<<<<< HEAD
-    justify-content: space-between;
-    align-items: center;   
-    height: 100%; 
-       
-=======
     justify-content: center;
     align-items: center;
     height: fit-content;
->>>>>>> eeb9d0c6130369cee32fb8ecb307ee5767393e9f
 }
 
 .editInfo{   
@@ -34,14 +27,10 @@
     }    
 }
 
-<<<<<<< HEAD
-
-=======
 .buttons{
     display:flex;
     flex-flow:column nowrap;
 }
->>>>>>> eeb9d0c6130369cee32fb8ecb307ee5767393e9f
 
 .addPhoto{
     display: flex;

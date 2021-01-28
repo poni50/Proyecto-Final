@@ -168,7 +168,6 @@ export class ProfilePage implements OnInit {
   });
 
   logout() {
-    this.auth.logout();
-    this.router.navigate(["/landing"]);
+    this.auth.logout().then(() => this.router.navigate(["/landing"]));
   }
 }

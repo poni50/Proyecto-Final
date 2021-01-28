@@ -1,31 +1,31 @@
 <ion-content>
-<div class='profileInfo'>
-  <ion-avatar><ion-img [src]="userInfo?.avatar ? userInfo.avatar.webviewPath : defaultAvatar"></ion-img></ion-avatar>
-  <div class="addPhoto" *ngIf='edit'>
-    <ion-button class='sendPhoto' fill='clear' (click)='setPhoto(true)'>Set photo</ion-button>
-    <ion-button class='sendPhoto' fill='clear' (click)='setPhoto(false)'>Take photo</ion-button>
+  <div class='profileInfo'>
+    <div class="generalInfo">
+      <ion-avatar><ion-img [src]="userInfo?.avatar ? userInfo.avatar.webviewPath : defaultAvatar"></ion-img></ion-avatar>
+      <div class="addPhoto" *ngIf='edit'>
+        <ion-button class='sendPhoto' fill='clear' (click)='setPhoto(true)'>Set photo</ion-button>
+        <ion-button class='sendPhoto' fill='clear' (click)='setPhoto(false)'>Take photo</ion-button>
+      </div>
+      <div *ngIf='!edit' style="text-align: center;">
+        <p>{{userInfo?.username}}</p>
+        <p>{{user?.email}}</p>
+      </div>
+
+      <div class="editInfo" *ngIf='edit'>
+        <form [formGroup]="fg" (submit)='sendData()'>
+          <ion-item>
+            <ion-label position="floating">Username</ion-label>
+            <ion-input type="text" formControlName="username"></ion-input>
+          </ion-item>    
+          <ion-button type='submit'>Submit</ion-button>
+        </form>
+      </div>
+
+    </div>
+    
+    <div class='buttons'>
+      <ion-button  #send fill='clear' (click)='editProfile()'>{{edit ? 'Cancel' : 'Edit'}}</ion-button>
+      <ion-button fill='clear' (click)='logout()' color="danger">Logout</ion-button>
+    </div>
   </div>
-  <p>{{userInfo?.username}}</p>
-  <p>{{user?.email}}</p>
-
-  <div class="editInfo" *ngIf='edit'>
-    <form [formGroup]="fg" (submit)='sendData()'>
-      <ion-item>
-        <ion-label position="floating">Username</ion-label>
-        <ion-input type="text" formControlName="username"></ion-input>
-      </ion-item>    
-      <ion-button type='submit'>Submit</ion-button>
-    </form>
-  </div>
-
-  <p class="lol">{{strings}}</p>
-  <p class="lol">{{errorTrace}}</p>
-  <div class='buttons'>
-    <ion-button  #send fill='clear' (click)='editProfile()'>{{edit ? 'Cancel' : 'Edit'}}</ion-button>
-    <ion-button fill='clear' (click)='logout()' color="danger">Logout</ion-button>
-  </div>
-</div>
-
-
-
 </ion-content>

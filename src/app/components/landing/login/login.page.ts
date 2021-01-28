@@ -1,5 +1,5 @@
 import { AuthService } from "./../../../services/auth.service";
-import { ModalController } from "@ionic/angular";
+import { ModalController, ToastController } from "@ionic/angular";
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -16,7 +16,8 @@ export class LoginPage implements OnInit {
     private modalController: ModalController,
     private fb: FormBuilder,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private toastCtrl: ToastController
   ) {}
 
   ngOnInit() {
@@ -36,7 +37,22 @@ export class LoginPage implements OnInit {
       .then(() => {
         this.router.navigate(["/tabs/home"]);
         this.dismiss();
+      })
+      .catch(async (err) => {        
+       let toast = await this.toastCtrl.create({
+          message: `${err.message}`,
+          buttons: [
+            {
+              text: "Ok",
+              role: "cancel",
+              handler: () => {},
+            },
+          ],
+          position: "bottom",
+        });
+
+        toast.present();
+        
       });
-    //.catch(err => this.snackBar.open(err.message,'Dismiss',{duration: 3000}));
   }
 }

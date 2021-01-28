@@ -49,9 +49,17 @@ export class PhotoPage implements OnInit {
     }
     this.updateLikes(this.imageData);
   }
-  addPhotoToCollection(collectionName) {
+  async addPhotoToCollection(collectionName) {
     this.imageData = { ...this.imageData, collection: collectionName.value };
     this.updateLikes(this.imageData);
+
+    let toast = await this.toastCtrl.create({
+      message: `Photo added to ${collectionName.value}`,
+      duration: 3000,
+      position: 'bottom'
+    });
+
+    toast.present();
   }
 
   updateLikes(image) {

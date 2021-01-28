@@ -1,3 +1,4 @@
+import { ToastController } from '@ionic/angular';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from "./../../services/auth.service";
@@ -26,7 +27,7 @@ export class ProfilePage implements OnInit {
   
 
   constructor(private photoService: PhotosService, private auth: AuthService, private router: Router, private platform: Platform, private formBuilder: FormBuilder,
-    private sanitizer: DomSanitizer) {
+    private toastCtrl: ToastController) {
     this.platform = platform;
   }
 
@@ -73,10 +74,18 @@ export class ProfilePage implements OnInit {
     );      
   }
 
-  sendData(){    
+  async sendData(){    
     this.userInfo.username = this.fg.get('username').value;   
     this.photoService.updateUser(this.userInfo);
+    let toast = await this.toastCtrl.create({
+      message: 'Update succesfully',
+      duration: 3000,
+      position: 'bottom'
+    });
+
     this.edit = false;
+    
+    toast.present();
   }
 
   async setPhoto(gallery: boolean) {

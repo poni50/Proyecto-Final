@@ -2,8 +2,9 @@
     margin-top: 15px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;    
+    justify-content: space-between;
+    align-items: center;   
+    height: 100%; 
        
 }
 
@@ -17,11 +18,7 @@
     }    
 }
 
-.buttons{
-    display:flex;
-    flex-flow:column nowrap;
-    margin-top: 50%;
-}
+
 
 .addPhoto{
     display: flex;

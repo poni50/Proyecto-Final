@@ -61,7 +61,7 @@ export class SearchPage implements OnInit {
       this.timeOutId =  setTimeout(()=>{
         this.loadSearchImages();
         searchName.value = '';
-      },2000);      
+      },500);      
     }
   }
 

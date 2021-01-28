@@ -1,8 +1,8 @@
-import { PhotosService } from 'src/app/services/photos.service';
+import { PhotosService } from "src/app/services/photos.service";
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
-import { ModalController } from "@ionic/angular";
+import { ModalController, ToastController } from "@ionic/angular";
 import { AuthService } from "src/app/services/auth.service";
 
 @Component({
@@ -18,7 +18,8 @@ export class RegisterPage implements OnInit {
     private fb: FormBuilder,
     private auth: AuthService,
     private router: Router,
-    private photoService: PhotosService
+    private photoService: PhotosService,
+    private toastCtrl: ToastController
   ) {}
 
   ngOnInit() {
@@ -64,14 +65,30 @@ export class RegisterPage implements OnInit {
   }
 
   register() {
-    this.auth.register(
-      this.fg.get('email').value,
-      this.fg.get('password').value,
-    ).then((data) => {
-      this.photoService.loadImages(data.user.uid, this.fg.get('username').value);
-      this.router.navigate(["/tabs/home"]);
-      this.dismiss();
-    });
-    //.catch(err => this.snackBar.open(err.message,'Dismiss',{duration: 3000}));
+    this.auth
+      .register(this.fg.get("email").value, this.fg.get("password").value)
+      .then((data) => {
+        this.photoService.loadImages(
+          data.user.uid,
+          this.fg.get("username").value
+        );
+        this.router.navigate(["/tabs/home"]);
+        this.dismiss();
+      })
+      .catch(async (err) => {
+        let toast = await this.toastCtrl.create({
+          message: `${err.message}`,
+          buttons: [
+            {
+              text: "Ok",
+              role: "cancel",
+              handler: () => {},
+            },
+          ],
+          position: "bottom",
+        });
+
+        toast.present();
+      });
   }
 }

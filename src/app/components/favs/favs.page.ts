@@ -48,9 +48,9 @@ export class FavsPage implements OnInit {
   async openCollectionModal(collection: any){
     const modal = await this.modalController.create({
       component: CollectionPage,
+
       componentProps: {collection: collection},
     });   
-
     return await modal.present();
   }
 

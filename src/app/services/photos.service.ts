@@ -30,7 +30,7 @@ export class PhotosService {
     this.uid = userId;
     const data = await this.storage.get(userId);
     this.observableUserInfo$.next(
-      data ? data : { username: username ? username : 'anon', avatar: '../../assets/avatar.png', likedPhotos: [], collections: []  }
+      data ? data : { username: username ? username : 'anon', likedPhotos: [], collections: []  }
     );
     this.observableUserInfo$.subscribe((e) => {
       this.userInfo = e;

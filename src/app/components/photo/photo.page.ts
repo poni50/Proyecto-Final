@@ -76,36 +76,4 @@ export class PhotoPage implements OnInit {
       toast.present();
     }
   }
-
-  convertBlobToBase64 = (blob: Blob) => new Promise((resolve, reject) => {
-    const reader = new FileReader;
-    reader.onerror = reject;
-    reader.onload = () => {
-        resolve(reader.result);
-    };
-    reader.readAsDataURL(blob);
-  });
-
-  async downloadImage() {
-    try{
-      const response = await fetch('https://cors-anywhere.herokuapp.com/'+this.imageData.links.download+'?client_id=7leTnM2XWB-w59oqKpugx_DLVrRvT1p6wGe_uobx0zE', { 
-        method: 'GET',
-      });
-      const image = await response.blob();
-
-      console.log("BLOB PHOTO", image);
-      
-      const base64Data: any = await this.convertBlobToBase64(image) as string;
-      console.log("BASE64 PHOTO", base64Data);
-      const savedFile = await Filesystem.writeFile({
-        path: 'Downloads/' + this.imageData.id + '.jpg',
-        data: base64Data,
-        directory: FilesystemDirectory.Data,
-      });
-
-      console.log(savedFile.uri);
-    } catch (err){
-      console.log(err);
-    }
-  }
 }

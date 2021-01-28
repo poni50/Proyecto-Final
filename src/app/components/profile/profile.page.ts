@@ -3,18 +3,11 @@ import { Router } from '@angular/router';
 import { AuthService } from "./../../services/auth.service";
 import { PhotosService } from "./../../services/photos.service";
 import { Component, OnInit } from "@angular/core";
-import {
-  Plugins,
-  CameraResultType,
-  Capacitor,
-  FilesystemDirectory,
-  CameraPhoto,
-  CameraSource,
-  Filesystem,
-  Camera,
-} from "@capacitor/core";
+import { Plugins, CameraResultType, Capacitor, FilesystemDirectory,CameraPhoto, CameraSource } from '@capacitor/core';
 import { Platform } from '@ionic/angular';
 import { DomSanitizer } from '@angular/platform-browser';
+
+const { Camera, Filesystem, Storage } = Plugins;
 
 @Component({
   selector: "app-profile",
@@ -26,9 +19,11 @@ export class ProfilePage implements OnInit {
   userInfo: any;
   defaultAvatar = '../../../assets/avatar.png';
   edit = false;
-  photo: any;
   private PHOTO_STORAGE: string = "photo";
   fg: FormGroup;
+  strings = '';
+  errorTrace = '';
+  
 
   constructor(private photoService: PhotosService, private auth: AuthService, private router: Router, private platform: Platform, private formBuilder: FormBuilder,
     private sanitizer: DomSanitizer) {
@@ -47,26 +42,25 @@ export class ProfilePage implements OnInit {
     }
     this.photoService.observableUserInfo$.subscribe((data) => {              
       this.userInfo = data;
-      console.log("USER", this.userInfo);
-      console.log("AVATAR", this.userInfo.avatar);
-      if(this.userInfo.avatar){
-        console.log("ENTERED IF");
-        this.loadImageStorage(this.userInfo.avatar).then((data) => this.userInfo.avatar.webviewPath = data);
+      if(this.userInfo.avatar != null){
+          this.loadImageStorage(this.userInfo.avatar).then((data) => this.userInfo.avatar.webviewPath = data);  
       }
     });    
   }
 
   // Leer la imagen desde el disco duro en memoria
   async loadImageStorage(photo){
-    console.log("PHOTO", photo);
-    
-    const readFile = await Filesystem.readFile({
-      path: photo.filepath,
-      directory: FilesystemDirectory.Data
-    });
+    if(!this.platform.is("hybrid")){
+      const readFile = await Filesystem.readFile({
+        path: photo.filepath,
+        directory: FilesystemDirectory.Data
+      });
+  
+      // Web platform only: Load the photo as base64 data
+      return `data:image/jpeg;base64,${readFile.data}`;
+    }
 
-    // Web platform only: Load the photo as base64 data
-    return `data:image/jpeg;base64,${readFile.data}`;
+    return photo.webviewPath;
   }
 
   editProfile(){    
@@ -81,46 +75,54 @@ export class ProfilePage implements OnInit {
 
   sendData(){    
     this.userInfo.username = this.fg.get('username').value;   
-    if(this.photo){            
-      this.userInfo.avatar = this.photo;    
-    }  
     this.photoService.updateUser(this.userInfo);
     this.edit = false;
   }
 
-  addPhotoToGallery() {
-    this.addNewToGallery().then((data) => {
-      this.photo = data;
-    });
+  async setPhoto(gallery: boolean) {
+      //this.userInfo.avatar = await this.addNewToGallery();
+      await this.addNewToGallery(gallery);
+      this.photoService.updateUser(this.userInfo);
   }
 
-  async addNewToGallery() {
+// userInfo?.avatar ? userInfo.avatar.webviewPath : defaultAvatar
+  public async addNewToGallery(gallery: boolean) {
+    // Take a photo
     const capturedPhoto = await Camera.getPhoto({
-       resultType: CameraResultType.Uri,
-       source: CameraSource.Camera,
-       quality: 100
-     });
-     const savedImageFile = await this.savePicture(capturedPhoto);
-     
-     return savedImageFile;
+      resultType: CameraResultType.Uri, // file-based data; provides best performance
+      source: gallery ? CameraSource.Photos : CameraSource.Camera, // automatically take a new photo with the camera
+      quality: 100 // highest quality (0 to 100)
+    });
+
+    // Save the picture and add it to photo collection
+    const savedImageFile = await this.savePicture(capturedPhoto);
+    this.userInfo.avatar = savedImageFile;
+    this.strings += 'succ';
   }
 
-  private async savePicture(cameraPhoto: CameraPhoto) {   
+  private async savePicture(cameraPhoto: CameraPhoto) {
+    // Convert photo to base64 format, required by Filesystem API to save
     const base64Data = await this.readAsBase64(cameraPhoto);
+
+    // Write the file to the data directory
     const fileName = new Date().getTime() + '.jpeg';
     const savedFile = await Filesystem.writeFile({
       path: fileName,
       data: base64Data,
       directory: FilesystemDirectory.Data
     });
-    console.log(this.platform);
-    if (this.platform.is('hybrid')) {     
+
+    if (this.platform.is('hybrid')) {
+      // Display the new image by rewriting the 'file://' path to HTTP
+      // Details: https://ionicframework.com/docs/building/webview#file-protocol
       return {
         filepath: savedFile.uri,
         webviewPath: Capacitor.convertFileSrc(savedFile.uri),
       };
     }
     else {
+      // Use webPath to display the new image instead of base64 since it's
+      // already loaded into memory
       return {
         filepath: fileName,
         webviewPath: cameraPhoto.webPath
@@ -129,11 +131,13 @@ export class ProfilePage implements OnInit {
   }
 
   private async readAsBase64(cameraPhoto: CameraPhoto) {
+    // "hybrid" will detect Cordova or Capacitor
     if (this.platform.is('hybrid')) {
       // Read the file into base64 format
       const file = await Filesystem.readFile({
         path: cameraPhoto.path
       });
+  
       return file.data;
     }
     else {

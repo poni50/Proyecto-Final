@@ -22,3 +22,15 @@
     flex-flow:column nowrap;
     margin-top: 50%;
 }
+
+.addPhoto{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    
+    *{
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}
